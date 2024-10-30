@@ -1,0 +1,20 @@
+﻿using EB.Domain.Entities;
+using EB.Domain.ValueObjects;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace EB.Persistence.Configurations;
+
+internal class StockConfiguration : IEntityTypeConfiguration<Stock>
+{
+    public void Configure(EntityTypeBuilder<Stock> builder)
+    {
+        builder.HasKey(p => p.Id);
+        builder.Property(p => p.Id).HasConversion(
+            productId => productId.Value,
+            value => new PrimarytId(value));
+        builder.Property(p => p.ProductId).HasConversion(
+          productId => productId.Value,
+          value => new PrimarytId(value));
+    }
+}
