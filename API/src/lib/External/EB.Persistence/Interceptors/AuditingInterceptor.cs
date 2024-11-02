@@ -1,4 +1,4 @@
-﻿using EB.Domain.Shared;
+﻿using EB.Domain.Bases;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
@@ -14,30 +14,30 @@ public class AuditingInterceptor : SaveChangesInterceptor
         {
             foreach (var entry in eventData.Context.ChangeTracker.Entries())
             {
-                if(entry.Entity is AuditableEntity entity)
+                if(entry.Entity is BaseEntityCommon entity)
                 {
                     switch (entry.State)
                     {
                         case EntityState.Deleted:
                         {
-                            entity.IsActive = false;
-                            entity.ModifiedOn = DateTime.UtcNow;
-                                entity.ModifiedBy = string.Empty;//logic to fetch current user;
+                                entity.IsDeleted = false;
+                                entity.UpdatedAt = DateTime.UtcNow;
+                                entity.UpdatedBy = string.Empty;//logic to fetch current user;
                                 entry.State = EntityState.Modified;
                                 break;
                         }
                         case EntityState.Added:
                             {
-                                entity.IsActive = true;
-                                entity.CreatedOn = DateTime.UtcNow;
+                                entity.IsDeleted = true;
+                                entity.CreatedAt = DateTime.UtcNow;
                                 entity.CreatedBy = string.Empty;//logic to fetch current user;
                                 entry.State = EntityState.Added;
                                 break;
                             }
                         case EntityState.Modified:
                             {
-                                entity.ModifiedOn = DateTime.UtcNow;
-                                entity.ModifiedBy = string.Empty;//logic to fetch current user;
+                                entity.UpdatedAt = DateTime.UtcNow;
+                                entity.UpdatedBy = string.Empty;//logic to fetch current user;
                                 entry.State = EntityState.Modified;
                                 break;
                             }

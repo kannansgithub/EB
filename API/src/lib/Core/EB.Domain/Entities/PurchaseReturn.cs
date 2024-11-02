@@ -1,10 +1,11 @@
-﻿using EB.Domain.Enums;
+﻿using EB.Domain.Bases;
+using EB.Domain.Enums;
 using EB.Domain.Shared;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EB.Domain.Entities;
 
-public class PurchaseReturn:Return
+public class PurchaseReturn:BaseReturn
 {
     public PurchaseReturn()
     {

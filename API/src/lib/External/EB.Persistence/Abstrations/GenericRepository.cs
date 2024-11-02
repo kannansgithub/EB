@@ -1,19 +1,17 @@
-﻿using EB.Domain.Shared;
+﻿using EB.Domain.Interfaces;
 using EB.Persistence;
+using EB.Persistence.DataAccessManagers.EFCores.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using System.Linq.Expressions;
 
 namespace EB.Persistence.Abstrations;
 
-public abstract class GenericRepository<T> : IGenericRepository<T> where T : class, IAuditableEntity
+public abstract class GenericRepository<T> : IGenericRepository<T> where T : class, IAggregateRoot
 {
-    protected readonly ApplicationDbContext _dbContext;
+    protected readonly DataContext _dbContext;
 
-    protected GenericRepository(ApplicationDbContext context)
-    {
-        _dbContext = context;
-    }
+    protected GenericRepository(DataContext context) => _dbContext = context;
 
     public async Task<T?> GetByIdAsync(string id, CancellationToken cancellationToken = default)
     {

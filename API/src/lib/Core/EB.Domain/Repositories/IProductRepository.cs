@@ -1,6 +1,6 @@
 ﻿using EB.Domain.Abstrations;
 using EB.Domain.Entities;
-using EB.Domain.Shared;
+using EB.Domain.Interfaces;
 
 namespace EB.Domain.Repositories;
 

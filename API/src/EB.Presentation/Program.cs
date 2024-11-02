@@ -1,10 +1,13 @@
 using EB.Application;
 using EB.Infrastructure;
+using EB.Persistence.DataAccessManagers.EFCores;
+using EB.Persistence.SeedManagers;
 using EB.Presentation.Shared.Filters;
 using EB.Presentation.Shared.Handlers;
 using EB.Presentation.Shared.Middlewares;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.OData;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,18 +43,19 @@ builder.Services.AddCors(opt =>
         .AllowAnyMethod()
         .AllowAnyHeader());
 });
-builder.Services.AddControllers();
-    //.AddOData(opt => opt
-    //    .Count()
-    //    .Filter()
-    //    .Expand()
-    //    .Select()
-    //    .OrderBy()
-    //    .SetMaxTop(null));
+builder.Services.AddControllers()
+    .AddOData(opt => opt
+        .Count()
+        .Filter()
+        .Expand()
+        .Select()
+        .OrderBy()
+        .SetMaxTop(null));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Easy Billing API", Version = "v1" });
+
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -73,29 +77,40 @@ builder.Services.AddSwaggerGen(c =>
                         Id = "Bearer"
                     }
                 },
-                new string[] { }
+                Array.Empty<string>()
             }
         });
 
     c.OperationFilter<SwaggerOperationFilter>();
+
+
 });
+
 builder.Services.Configure<ApiBehaviorOptions>(x =>
 {
     x.SuppressModelStateInvalidFilter = true;
 });
-//builder.Services.RegisterSystemSeedManager(builder.Configuration);
-//builder.Services.RegisterDemoSeedManager(builder.Configuration);
+builder.Services.RegisterSystemSeedManager(builder.Configuration);
+builder.Services.RegisterDemoSeedManager(builder.Configuration);
 var app = builder.Build();
 //craete database
-//app.CreateDatabase();
+app.CreateDatabase();
 
 //seed database with system data
 //app.SeedSystemData();
 
 //seed database with demo data
-if (app.Configuration.GetValue<bool>("IsDemoVersion"))
+
+if (app.Configuration.GetValue<bool>("SeedEnabled:IsEnabled"))
 {
-    //app.SeedDemoData();
+    if (app.Configuration.GetValue<bool>("SeedEnabled:IsDemoVersion"))
+    {
+        app.SeedDemoData();
+    }
+    else
+    {
+        app.SeedSystemData();
+    }
 }
 
 app.UseExceptionHandler(options => { });

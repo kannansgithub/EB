@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
+using EB.Application.Services.Repositories;
 using EB.Domain.Abstrations;
 using EB.Domain.Entities;
 using EB.Domain.Exceptions;
 using EB.Domain.Services;
-using EB.Domain.Shared;
 using EB.Infrastructure.Extensions;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
@@ -23,7 +23,7 @@ public class ClientService(
     {
         var entity = _mapper.Map<Client>(clientModel);
         var client = await _uow.Clients.AddAsync(entity, token);
-        await _uow.SaveChangesAsync(token);
+        await _uow.SaveAsync(token);
         _logger.LogInformation("invalidating cache for key: {CacheKey} from cache.", cacheKey);
         _cache.Remove(cacheKey);
         return _mapper.Map<ClientModel>(client);
@@ -34,7 +34,7 @@ public class ClientService(
         var client=await GetClientAsync(id, token);
         if(client is null) throw new NotFoundException(nameof(client), id);
         await _uow.Clients.DeleteAsync(_mapper.Map<Client>(client), token);
-        await _uow.SaveChangesAsync(token);
+        await _uow.SaveAsync(token);
         _logger.LogInformation("invalidating cache for key: {CacheKey} from cache.", cacheKey);
         _cache.Remove(cacheKey);
         _cache.Remove($"{cacheKey}:{id}");
@@ -75,7 +75,7 @@ public class ClientService(
         var entity = _mapper.Map<Client>(clientModel);
         entity.Id = id;
         var client = await _uow.Clients.UpdateAsync(entity, token);
-        await _uow.SaveChangesAsync(token);
+        await _uow.SaveAsync(token);
         _logger.LogInformation("invalidating cache for key: {CacheKey} from cache.", cacheKey);
         _cache.Remove(cacheKey);
         _cache.Remove($"{cacheKey}:{id}");

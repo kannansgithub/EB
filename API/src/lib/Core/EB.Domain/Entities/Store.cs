@@ -1,13 +1,13 @@
-﻿using EB.Domain.Shared;
+﻿using EB.Domain.Bases;
+using EB.Domain.Interfaces;
+using EB.Domain.Shared;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EB.Domain.Entities;
 
-public class Store:AuditableEntity
+public class Store : BaseEntityAdvance, IAggregateRoot
 {
-    public required string Code { get; set; }
-    public required string Name { get; set; }
-    public required string Description { get; set; }
+    public bool IsOnline { get; set; }
     [ForeignKey(nameof(Address))]
     public required string AddressId { get; set; }
     public required string ClientId { get; set; }

@@ -1,10 +1,11 @@
-﻿using EB.Domain.Enums;
+﻿using EB.Domain.Bases;
+using EB.Domain.Enums;
 using EB.Domain.Shared;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EB.Domain.Entities;
 
-public class SaleReturn : Return
+public class SaleReturn : BaseReturn
 {
     public SaleReturn()
     {

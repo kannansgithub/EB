@@ -2,19 +2,20 @@
 using EB.Domain.Entities;
 using EB.Domain.Repositories;
 using EB.Persistence.Abstrations;
+using EB.Persistence.DataAccessManagers.EFCores.Contexts;
 using Microsoft.EntityFrameworkCore;
 
 namespace EB.Persistence.Repositories;
 
-public class ProductRepository(ApplicationDbContext dbContext) : GenericRepository<Product>(dbContext), IProductRepository
+public class ProductRepository(DataContext dbContext) : GenericRepository<Product>(dbContext), IProductRepository
 {
     public async Task<IEnumerable<ProductDetail>?> GetByCategory(string categoryId, CancellationToken cancellationToken = default)
     {
-        var products =await (from p in _dbContext.Products.AsQueryable()
-                        join s in _dbContext.Stocks.AsQueryable() on p.StockId equals s.Id
-                        join u in _dbContext.Uoms.AsQueryable() on p.UOMId equals u.Id
-                        join sub in _dbContext.SubCategories.AsQueryable() on p.SubCategoryId equals sub.Id
-                        join ca in _dbContext.Categories.AsQueryable() on sub.CategoryId equals ca.Id
+        var products =await (from p in _dbContext.Product.AsQueryable()
+                        join s in _dbContext.Stock.AsQueryable() on p.StockId equals s.Id
+                        join u in _dbContext.Uom.AsQueryable() on p.UOMId equals u.Id
+                        join sub in _dbContext.SubCategory.AsQueryable() on p.SubCategoryId equals sub.Id
+                        join ca in _dbContext.Category.AsQueryable() on sub.CategoryId equals ca.Id
                         where ca.Id == categoryId
                         select new ProductDetail
                         (
@@ -45,11 +46,11 @@ public class ProductRepository(ApplicationDbContext dbContext) : GenericReposito
     
     public async Task<ProductDetail?> GetBySku(string sku, CancellationToken cancellationToken = default)
     {
-        var product = await(from p in _dbContext.Products.AsQueryable()
-                             join s in _dbContext.Stocks.AsQueryable() on p.StockId equals s.Id
-                             join u in _dbContext.Uoms.AsQueryable() on p.UOMId equals u.Id
-                             join sub in _dbContext.SubCategories.AsQueryable() on p.SubCategoryId equals sub.Id
-                             join ca in _dbContext.Categories.AsQueryable() on sub.CategoryId equals ca.Id
+        var product = await(from p in _dbContext.Product.AsQueryable()
+                             join s in _dbContext.Stock.AsQueryable() on p.StockId equals s.Id
+                             join u in _dbContext.Uom.AsQueryable() on p.UOMId equals u.Id
+                             join sub in _dbContext.SubCategory.AsQueryable() on p.SubCategoryId equals sub.Id
+                             join ca in _dbContext.Category.AsQueryable() on sub.CategoryId equals ca.Id
                              where p.Sku == sku
                              select new ProductDetail
                              (
@@ -79,7 +80,7 @@ public class ProductRepository(ApplicationDbContext dbContext) : GenericReposito
     }
     private string GetTaxName(string taxId)
     {
-        var tax = _dbContext.Taxes.FirstOrDefault(x => x.Id == taxId);
+        var tax = _dbContext.Tax.FirstOrDefault(x => x.Id == taxId);
         return tax?.Name ?? string.Empty;
     }
 }

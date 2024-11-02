@@ -1,14 +1,13 @@
 ﻿using AutoMapper;
+using EB.Application.Services.Repositories;
 using EB.Domain.Abstrations;
 using EB.Domain.Entities;
 using EB.Domain.Exceptions;
 using EB.Domain.Services;
-using EB.Domain.Shared;
 using EB.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
-using static System.Formats.Asn1.AsnWriter;
 
 namespace EB.Infrastructure.Services;
 
@@ -30,7 +29,7 @@ public class StoreService(
             var address=await _uow.Addresses.AddAsync(addressEntity, token);
             storeEntity.AddressId=address.Id;
             var store = await _uow.Stores.AddAsync(storeEntity, token);
-            await _uow.SaveChangesAsync(token);
+            await _uow.SaveAsync(token);
             transaction?.Commit();
             _cache.Remove(cacheKey);
             return new StoreResponse(
@@ -71,7 +70,7 @@ public class StoreService(
             var address = await _uow.Addresses.GetByIdAsync(store.AddressId, token);
             if (address is not null) throw new DeleteOperationException(nameof(address), id);
             await _uow.Stores.DeleteAsync(store, token);
-            await _uow.SaveChangesAsync(token);
+            await _uow.SaveAsync(token);
             transaction?.Commit();
             _cache.Remove(cacheKey);
             _cache.Remove($"{cacheKey}:{id}");
@@ -110,9 +109,9 @@ public class StoreService(
                     s.Address?.AddressLine3,
                     s.Address?.City,
                     s.Address?.Region,
-                    s.Address?.PostalCode,
+                    s.Address?.ZipCode,
                     s.Address?.Country,
-                    s.Address?.PhoneNumber,
+                    s.Address?.Phone,
                     s.Address?.Fax
                     )).FirstOrDefault();
             })!;
@@ -141,9 +140,9 @@ public class StoreService(
                     s.Address?.AddressLine3,
                     s.Address?.City,
                     s.Address?.Region,
-                    s.Address?.PostalCode,
+                    s.Address?.ZipCode,
                     s.Address?.Country,
-                    s.Address?.PhoneNumber,
+                    s.Address?.Phone,
                     s.Address?.Fax
                     ));
             }, cacheOptions)!;
@@ -163,7 +162,7 @@ public class StoreService(
                 await _uow.Addresses.UpdateAsync(address, token);
             }
             await _uow.Stores.UpdateAsync(store, token);
-            await _uow.SaveChangesAsync(token);
+            await _uow.SaveAsync(token);
             transaction?.Commit();
             _cache.Remove(cacheKey);
             _cache.Remove($"{cacheKey}:{id}");

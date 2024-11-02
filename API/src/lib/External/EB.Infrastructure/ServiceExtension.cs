@@ -1,8 +1,19 @@
 ﻿using EB.Domain.Repositories;
 using EB.Domain.Services;
+using EB.Infrastructure.DocumentManagers;
+using EB.Infrastructure.EmailManagers;
+using EB.Infrastructure.EncryptionManagers;
+using EB.Infrastructure.ImageManagers;
+using EB.Infrastructure.LoggingManagers.Serilogs;
+using EB.Infrastructure.NumberSequenceManagers;
 using EB.Infrastructure.Services;
 using EB.Persistence;
+using EB.Persistence.DataAccessManagers.EFCores;
 using EB.Persistence.Repositories;
+using EB.Persistence.SecurityManagers.AspNetIdentity;
+using EB.Persistence.SecurityManagers.Navigations;
+using EB.Persistence.SecurityManagers.RoleClaims;
+using EB.Persistence.SecurityManagers.Tokens;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,7 +25,7 @@ public static class ServiceExtension
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddAutoMapper(typeof(ServiceExtension).Assembly);
+        //services.AddAutoMapper(typeof(ServiceExtension).Assembly);
         services.AddPersistence(configuration);
         services.AddStackExchangeRedisCache(options =>
         {
@@ -23,7 +34,7 @@ public static class ServiceExtension
             options.ConfigurationOptions = new ConfigurationOptions()
             {
                 AbortOnConnectFail = true,
-                EndPoints={options.Configuration!}
+                EndPoints = { options.Configuration! }
             };
         });
 
@@ -33,7 +44,7 @@ public static class ServiceExtension
         services.AddScoped<IColorService, ColorService>();
         services.AddScoped<ICounterService, CounterService>();
         services.AddScoped<ICustomerService, CustomerService>();
-        services.AddScoped<IImageService, ImageService>();
+        //services.AddScoped<IImageService, ImageService>();
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<IPurchaseItemService, PurchaseItemService>();
         services.AddScoped<IPurchaseOrderReposirory, PurchaseOrderReposirory>();
@@ -48,6 +59,31 @@ public static class ServiceExtension
         services.AddScoped<ITaxService, TaxService>();
         services.AddScoped<IUomService, UomService>();
         services.AddScoped<IVendorService, VendorService>();
+        //return services;
+
+
+
+
+        //>>> Serilog
+        services.RegisterSerilog(configuration);
+
+        //>>> RegisterImageManager
+        services.RegisterImageManager(configuration);
+
+        //>>> RegisterDocumentManager
+        services.RegisterDocumentManager(configuration);
+
+       
+
+        //>>> NumberSequenceManager
+        services.RegisterNumberSequenceManager(configuration);
+
+        //>>> EmailManager
+        services.RegisterEmailManager(configuration);
+
+        //>>> EncryptionManager
+        services.RegisterEncryptionManager(configuration);
+
         return services;
     }
 }

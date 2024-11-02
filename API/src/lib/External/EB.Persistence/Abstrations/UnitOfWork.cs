@@ -1,6 +1,6 @@
 ﻿using EB.Domain.Entities;
+using EB.Domain.Interfaces;
 using EB.Domain.Repositories;
-using EB.Domain.Shared;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Data;
 

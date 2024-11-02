@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DomainEvents\" />
+    <Compile Remove="Interfaces\IUnitOfWork.cs" />
   </ItemGroup>
 
   <ItemGroup>

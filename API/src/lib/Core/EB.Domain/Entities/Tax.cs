@@ -1,11 +1,10 @@
-﻿using EB.Domain.Shared;
+﻿using EB.Domain.Bases;
+using EB.Domain.Interfaces;
 
 namespace EB.Domain.Entities;
 
-public class Tax:AuditableEntity
+public class Tax : BaseEntityAdvance, IAggregateRoot
 {
-    public required string Code { get; set; }
-    public required string Name { get; set; }
     public required string Symbol { get; set; }
 
     public virtual ICollection<Product> Products { get; set; } = [];

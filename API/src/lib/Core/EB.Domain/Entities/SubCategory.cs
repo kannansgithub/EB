@@ -1,12 +1,11 @@
-﻿using EB.Domain.Shared;
+﻿using EB.Domain.Bases;
+using EB.Domain.Interfaces;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EB.Domain.Entities;
 
-public class SubCategory:AuditableEntity
+public class SubCategory: BaseEntityCommon, IAggregateRoot
 {
-    public required string Name { get; set; }
-    public required string Description { get; set; }
     [ForeignKey(nameof(Category))]
     public required string CategoryId { get; set; }
 

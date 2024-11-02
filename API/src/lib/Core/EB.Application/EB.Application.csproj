@@ -8,11 +8,13 @@
 
   <ItemGroup>
     <Compile Remove="Products\**" />
-    <Compile Remove="Services\**" />
     <EmbeddedResource Remove="Products\**" />
-    <EmbeddedResource Remove="Services\**" />
     <None Remove="Products\**" />
-    <None Remove="Services\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Services\IProductService.cs" />
+    <Compile Remove="Services\ProductService.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,9 +31,38 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Features\Category\Dtos\" />
+    <Folder Include="Features\Client\Dtos\" />
+    <Folder Include="Features\Client\Validators\" />
+    <Folder Include="Features\Color\Dtos\" />
+    <Folder Include="Features\Color\Validators\" />
+    <Folder Include="Features\Counter\Dtos\" />
+    <Folder Include="Features\Counter\Validators\" />
+    <Folder Include="Features\Customer\Dtos\" />
+    <Folder Include="Features\Customer\Validators\" />
+    <Folder Include="Features\Image\Dtos\" />
+    <Folder Include="Features\Image\Validators\" />
+    <Folder Include="Features\NumberSequence\Dtos\" />
+    <Folder Include="Features\NumberSequence\Validators\" />
+    <Folder Include="Features\Product\Dtos\" />
+    <Folder Include="Features\Product\Validators\" />
+    <Folder Include="Features\Purchase\Dtos\" />
+    <Folder Include="Features\Purchase\Validators\" />
+    <Folder Include="Features\Sale\Dtos\" />
+    <Folder Include="Features\Sale\Validators\" />
+    <Folder Include="Features\Stock\Dtos\" />
+    <Folder Include="Features\Stock\Validators\" />
+    <Folder Include="Features\Store\Dtos\" />
+    <Folder Include="Features\Store\Validators\" />
+    <Folder Include="Features\SubCategory\Dtos\" />
+    <Folder Include="Features\SubCategory\Validators\" />
+    <Folder Include="Features\Tax\Dtos\" />
+    <Folder Include="Features\Tax\Validators\" />
+    <Folder Include="Features\Uom\Dtos\" />
+    <Folder Include="Features\Uom\Validators\" />
+    <Folder Include="Features\Vendor\Dtos\" />
+    <Folder Include="Features\Vendor\Validators\" />
     <Folder Include="Shared\Abstrations\" />
-    <Folder Include="Shared\Behaviors\" />
-    <Folder Include="Shared\Contracts\" />
   </ItemGroup>
 
 </Project>
