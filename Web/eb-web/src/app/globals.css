@@ -2,20 +2,62 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+body {
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: 0 0% 100%;
+    --foreground: 20 14.3% 4.1%;
+    --card: 0 0% 100%;
+    --card-foreground: 20 14.3% 4.1%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 20 14.3% 4.1%;
+    --primary: 199.6 98.9% 36.5%;
+    --primary-foreground: 60 9.1% 97.8%;
+    --secondary: 256.7 69.2% 94.9%;
+    --secondary-foreground: 24 9.8% 10%;
+    --muted: 60 4.8% 95.9%;
+    --muted-foreground: 25 5.3% 44.7%;
+    --accent: 60 4.8% 95.9%;
+    --accent-foreground: 24 9.8% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 60 9.1% 97.8%;
+    --border: 20 5.9% 90%;
+    --input: 20 5.9% 90%;
+    --ring: 200.7 98.9% 34.5%;
+    --radius: 0.95remrem;
+  }
+
+  .dark {
+    --background: 205 92.3% 5.1%;
+    --foreground: 60 9.1% 97.8%;
+    --card: 205 92.3% 5.1%;
+    --card-foreground: 60 9.1% 97.8%;
+    --popover: 205 92.3% 5.1%;
+    --popover-foreground: 60 9.1% 97.8%;
+    --primary: 199.6 98.9% 36.5%;
+    --primary-foreground: 60 9.1% 97.8%;
+    --secondary: 204.3 97.4% 14.9%;
+    --secondary-foreground: 60 9.1% 97.8%;
+    --muted: 204.3 97.4% 14.9%;
+    --muted-foreground: 24 5.4% 63.9%;
+    --accent: 204.3 97.4% 14.9%;
+    --accent-foreground: 60 9.1% 97.8%;
+    --destructive: 0 72.2% 50.6%;
+    --destructive-foreground: 60 9.1% 97.8%;
+    --border: 199.7 94.4% 13.9%;
+    --input: 204.3 97.4% 14.9%;
+    --ring: 20.5 90.2% 48.2%;
   }
 }
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+/* https://customizer.railly.dev/ */
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
