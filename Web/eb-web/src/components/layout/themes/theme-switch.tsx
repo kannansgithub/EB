@@ -34,6 +34,9 @@ export function ThemeSwitcher() {
         <DropdownMenuItem onClick={() => setTheme('system')}>
           System
         </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme('blue')}>
+          Blue
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
