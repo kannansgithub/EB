@@ -22,6 +22,7 @@ public class DataContext(DbContextOptions<DataContext> options) : IdentityDbCont
     public DbSet<FileDoc> FileDoc { get; set; }
     public DbSet<FileImage> FileImage { get; set; }
     public DbSet<Image> Image { get; set; }
+    public DbSet<Menu> Menu { get; set; }
     public DbSet<NumberSequence> NumberSequence { get; set; }
     public DbSet<Product> Product { get; set; }
     public DbSet<PurchaseItem> PurchaseItem { get; set; }
@@ -43,13 +44,6 @@ public class DataContext(DbContextOptions<DataContext> options) : IdentityDbCont
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-        //modelBuilder.ApplyConfiguration(new ApplicationUserConfiguration());
-        //modelBuilder.ApplyConfiguration(new NumberSequenceConfiguration());
-        //modelBuilder.ApplyConfiguration(new TokenConfiguration());
-        //modelBuilder.ApplyConfiguration(new ConfigConfiguration());
-        //modelBuilder.ApplyConfiguration(new CurrencyConfiguration());
-        //modelBuilder.ApplyConfiguration(new FileDocConfiguration());
-        //modelBuilder.ApplyConfiguration(new FileImageConfiguration());
     }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

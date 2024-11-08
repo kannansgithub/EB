@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EB.Domain.Bases;
+﻿namespace EB.Domain.Bases;
 
 /// <summary>
 /// Base class for advanced entities that extends <see cref="BaseEntityAudit"/>.

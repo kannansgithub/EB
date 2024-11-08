@@ -1,17 +1,12 @@
-import { Button } from '../../../../components/ui/button';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '../../../../components/ui/card';
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '../../../../components/ui/tabs';
+} from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Overview from './components/overview';
 import RecentSales from './components/recent-sales';
 
@@ -21,7 +16,9 @@ const DashboardPage = () => {
       <div className="mb-2 flex items-center justify-between space-y-2">
         <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
         <div className="flex items-center space-x-2">
-          <Button>Download</Button>
+          <Button>New Sales</Button>
+          <Button variant={'outline'}>New Purchase</Button>
+          <Button variant={'secondary'}>Download</Button>
         </div>
       </div>
       <Tabs

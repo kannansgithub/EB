@@ -9,5 +9,6 @@ public interface IRoleClaimService
         CancellationToken cancellationToken = default);
     Task<List<Claim>> GetClaimListAsync(
         CancellationToken cancellationToken = default);
+    Task<List<string>> GetRoleListByUserAsync(string userId);
 
 }

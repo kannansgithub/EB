@@ -16,6 +16,7 @@ public interface IEntityDbSet
     public DbSet<FileDoc> FileDoc { get; set; }
     public DbSet<FileImage> FileImage { get; set; }
     public DbSet<Image> Image { get; set; }
+    public DbSet<Menu> Menu { get; set; }
     public DbSet<NumberSequence> NumberSequence { get; set; }
     public DbSet<Product> Product { get; set; }
     public DbSet<PurchaseItem> PurchaseItem { get; set; }

@@ -95,6 +95,7 @@ public static class DI
         services.AddScoped<ICounterRepository, CounterRepository>();
         services.AddScoped<ICustomerRepository, CustomerRepository>();
         services.AddScoped<IImageRepository, ImageRepository>();
+        services.AddScoped<IMenuRepository, MenuRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IPurchaseItemRepository, PurchaseItemRepository>();
         services.AddScoped<IPurchaseOrderReposirory, PurchaseOrderReposirory>();

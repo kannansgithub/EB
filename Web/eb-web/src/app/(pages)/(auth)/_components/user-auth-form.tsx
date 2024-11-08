@@ -16,7 +16,8 @@ import { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import toasterMessage from '@/lib/tost-alert';
-import { ThemeSwitcher } from '../../../../components/layout/themes/theme-switch';
+import { ThemeSwitcher } from '@/components/layout/themes/theme-switch';
+import Icon from '@/components/custom/icon';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Enter a valid email address' }),
@@ -30,7 +31,8 @@ export default function UserAuthForm() {
   const callbackUrl = searchParams.get('callbackUrl');
   const [loading, startTransition] = useTransition();
   const defaultValues = {
-    email: 'demo@gmail.com',
+    email: 'admin@root.com',
+    password: '123456',
   };
   const form = useForm<UserFormValue>({
     resolver: zodResolver(formSchema),
@@ -92,6 +94,7 @@ export default function UserAuthForm() {
             )}
           />
           <ThemeSwitcher />
+          <Icon iconName="BiMenuAltLeft" set="bi" size={40} color="blue" />
           <Button disabled={loading} className="ml-auto w-full" type="submit">
             Signin
           </Button>

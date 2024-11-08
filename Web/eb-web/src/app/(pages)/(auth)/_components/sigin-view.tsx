@@ -12,6 +12,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import Image from 'next/image';
+import LoginPageCarousel from '@/components/loginpage-carousel';
 
 export const metadata: Metadata = {
   title: 'Authentication',
@@ -39,16 +40,16 @@ export default function SignInViewPage() {
             alt="logo"
             layout="fill"
             objectFit="cover"
+            className="w-full -z-1 -mb-40"
+            style={{
+              maskImage:
+                'linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0))',
+            }}
           />
         </div>
         <div className="relative z-20 mt-auto">
           <blockquote className="space-y-2">
-            <p className="text-lg ">
-              &ldquo;This library has saved me countless hours of work and
-              helped me deliver stunning designs to my clients faster than ever
-              before.&rdquo;
-            </p>
-            <footer className="text-sm">Sofia Davis</footer>
+            <LoginPageCarousel />
           </blockquote>
         </div>
       </div>

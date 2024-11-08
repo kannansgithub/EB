@@ -1,7 +1,8 @@
 import '../envConfig';
 import CredentialProvider from 'next-auth/providers/credentials';
-import type { NextAuthConfig } from 'next-auth';
+import type { NextAuthConfig, User } from 'next-auth';
 import axios from 'axios';
+import toasterMessage from './lib/tost-alert';
 const authConfig = {
   session: {
     strategy: 'jwt',
@@ -13,26 +14,34 @@ const authConfig = {
         username: { label: 'Username', type: 'text', placeholder: 'jsmith' },
         password: { label: 'Password', type: 'password' },
       },
-      async authorize(credentials) {
-        const { username, password } = credentials as {
-          username: string;
+      async authorize(credentials, req) {
+        const { email, password } = credentials as {
+          email: string;
           password: string;
         };
-        const user = {
-          id: '1',
-          name: 'John Doe',
-          email: 'jsmith@example.com',
-        };
-        // const res = await axios.post('http://localhost:3000/api/auth/signin', {
-        //   username,
-        //   password,
-        // });
-        // const user = res.data;
-        if (user) {
-          return user;
-        } else {
-          return null;
+        try {
+          const res = await axios.post(
+            'http://localhost:5181/api/Account/Login',
+            {
+              email,
+              password,
+            }
+          );
+          console.log('Response Data: ', res.data?.message);
+          if (res.data.code === 200) {
+            const user = res?.data?.content;
+            if (user) {
+              return user;
+            } else {
+              return null;
+            }
+          } else {
+            toasterMessage.error(res.data.message);
+          }
+        } catch {
+          toasterMessage.error('Something went wrong');
         }
+        // const user = res.data;
       },
     }),
   ],
@@ -42,6 +51,14 @@ const authConfig = {
     signOut: '/',
   },
   secret: 'DSHFSKDJHF345345JH34543',
+  callbacks: {
+    async jwt({ token, user }) {
+      return { ...token, ...user };
+    },
+    async session({ session }) {
+      return session;
+    },
+  },
 } satisfies NextAuthConfig;
 
 export default authConfig;

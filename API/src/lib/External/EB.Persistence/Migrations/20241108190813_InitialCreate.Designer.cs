@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EB.Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241102132723_InitialCreate")]
+    [Migration("20241108190813_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -672,6 +672,58 @@ namespace EB.Persistence.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("Image");
+                });
+
+            modelBuilder.Entity("EB.Domain.Entities.Menu", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Caption")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Icon")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("MenuId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ParentId")
+                        .HasColumnType("text");
+
+                    b.Property<string[]>("Roles")
+                        .IsRequired()
+                        .HasColumnType("text[]");
+
+                    b.Property<string>("URI")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MenuId");
+
+                    b.ToTable("Menu");
                 });
 
             modelBuilder.Entity("EB.Domain.Entities.NumberSequence", b =>
@@ -1923,6 +1975,13 @@ namespace EB.Persistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("EB.Domain.Entities.Menu", b =>
+                {
+                    b.HasOne("EB.Domain.Entities.Menu", null)
+                        .WithMany("Children")
+                        .HasForeignKey("MenuId");
+                });
+
             modelBuilder.Entity("EB.Domain.Entities.NumberSequence", b =>
                 {
                     b.HasOne("EB.Persistence.SecurityManagers.AspNetIdentity.ApplicationUser", null)
@@ -2107,6 +2166,11 @@ namespace EB.Persistence.Migrations
             modelBuilder.Entity("EB.Domain.Entities.Customer", b =>
                 {
                     b.Navigation("Addresses");
+                });
+
+            modelBuilder.Entity("EB.Domain.Entities.Menu", b =>
+                {
+                    b.Navigation("Children");
                 });
 
             modelBuilder.Entity("EB.Domain.Entities.Product", b =>

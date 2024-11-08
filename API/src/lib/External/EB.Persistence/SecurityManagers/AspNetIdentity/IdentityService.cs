@@ -6,7 +6,9 @@ using EB.Application.Services.Externals;
 using EB.Application.Services.Repositories;
 using EB.Application.Shared.Contracts;
 using EB.Domain.Entities;
+using EB.Domain.Repositories;
 using EB.Persistence.DataAccessManagers.EFCores.Contexts;
+using EB.Persistence.Repositories;
 using EB.Persistence.SecurityManagers.RoleClaims;
 using EB.Persistence.SecurityManagers.Tokens;
 using Microsoft.AspNetCore.Authorization;
@@ -33,6 +35,7 @@ public class IdentityService : IIdentityService
     private readonly INavigationService _navigationService;
     private readonly IRoleClaimService _roleClaimService;
     private readonly QueryContext _queryContext;
+    private readonly IMenuRepository _menuRepository;
 
     public IdentityService(
         IOptions<IdentitySettings> identitySettings,
@@ -46,7 +49,8 @@ public class IdentityService : IIdentityService
         IUnitOfWork unitOfWork,
         INavigationService navigationService,
         IRoleClaimService roleClaimService,
-        QueryContext queryContext
+        QueryContext queryContext,
+        IMenuRepository menuRepository
         )
     {
         _identitySettings = identitySettings.Value;
@@ -61,6 +65,7 @@ public class IdentityService : IIdentityService
         _navigationService = navigationService;
         _roleClaimService = roleClaimService;
         _queryContext = queryContext;
+        _menuRepository = menuRepository;
     }
 
     public async Task<GetClaimsByUserResult> GetClaimsByUserAsync(
@@ -696,13 +701,7 @@ public class IdentityService : IIdentityService
 
     public async Task<LoginUserResult> LoginAsync(string email, string password, CancellationToken cancellationToken = default)
     {
-        var user = await _userManager.FindByEmailAsync(email);
-
-        if (user == null)
-        {
-            throw new UnauthorizedAccessException("Invalid login credentials.");
-        }
-
+        var user = await _userManager.FindByEmailAsync(email) ?? throw new UnauthorizedAccessException("Invalid login credentials.");
         if (user.IsBlocked)
         {
             throw new UnauthorizedAccessException($"User is blocked. {email}");
@@ -826,8 +825,8 @@ public class IdentityService : IIdentityService
         {
             throw new IdentityException($"Role '{role}' not found.");
         }
-
-        if (!RoleClaimHelper.GetPermissionClaims().Any(x => claims.Contains(x)))
+        var response =await RoleClaimHelper.GetPermissionClaims(_menuRepository, [role]);
+        if (!response.Any(x => claims.Contains(x)))
         {
             throw new IdentityException($"Contain not valid claims: {string.Join("; ", claims.Select(x => x))}.");
         }
@@ -857,14 +856,10 @@ public class IdentityService : IIdentityService
 
         cancellationToken.ThrowIfCancellationRequested();
 
-        var identityRole = await _roleManager.FindByNameAsync(role);
+        var identityRole = await _roleManager.FindByNameAsync(role) ?? throw new IdentityException($"Role '{role}' not found.");
+        var response = await RoleClaimHelper.GetPermissionClaims(_menuRepository, [role]);
 
-        if (identityRole == null)
-        {
-            throw new IdentityException($"Role '{role}' not found.");
-        }
-
-        if (!RoleClaimHelper.GetPermissionClaims().Any(x => claims.Contains(x)))
+        if (!response.Any(x => claims.Contains(x)))
         {
             throw new IdentityException($"Contain not valid claims: {string.Join("; ", claims.Select(x => x))}.");
         }

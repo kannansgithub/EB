@@ -81,16 +81,10 @@ public class AccountController : BaseApiController
     [HttpPost("Login")]
     public async Task<ActionResult<ApiSuccessResult<LoginUserResult>>> LoginAsync(LoginUserRequest request, CancellationToken cancellationToken)
     {
-        var response = await _sender.Send(request, cancellationToken);
-
-        if (response == null)
-        {
-            throw new ApiException(
+        var response = await _sender.Send(request, cancellationToken) ?? throw new ApiException(
                 StatusCodes.Status401Unauthorized,
                 "Invalid or expired token"
                 );
-        }
-
         var accessToken = response.AccessToken;
         var refreshToken = response.RefreshToken;
 

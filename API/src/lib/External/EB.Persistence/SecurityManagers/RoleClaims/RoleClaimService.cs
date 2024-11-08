@@ -13,6 +13,12 @@ public class RoleClaimService(
     private readonly UserManager<ApplicationUser> _userManager = userManager;
     private readonly RoleManager<IdentityRole> _roleManager = roleManager;
 
+    public async Task<List<string>> GetRoleListByUserAsync(string userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId) ?? throw new RoleClaimException($"User not found. ID: {userId}");
+        var roles = await _userManager.GetRolesAsync(user);
+        return (List<string>)(roles ?? []);
+    }
     public async Task<List<Claim>> GetClaimListByUserAsync(
         string userId,
         CancellationToken cancellationToken = default)

@@ -17,6 +17,7 @@ public static class DI
         services.AddScoped<IdentitySeeder>();
         services.AddScoped<CurrencySeeder>();
         services.AddScoped<ConfigSeeder>();
+        services.AddScoped<MenuSeeder>();
 
         return services;
     }
@@ -28,6 +29,7 @@ public static class DI
         var serviceProvider = scope.ServiceProvider;
 
         var context = serviceProvider.GetRequiredService<DataContext>();
+
         if (!context.Config.Any()) //if empty, thats mean never been seeded before
         {
 
@@ -43,8 +45,13 @@ public static class DI
             var configSeeder = serviceProvider.GetRequiredService<ConfigSeeder>();
             configSeeder.GenerateDataAsync().Wait();
 
+           
         }
-
+        if (!context.Menu.Any()) //if empty, thats mean never been seeded before
+        {
+            var menuSeeder = serviceProvider.GetRequiredService<MenuSeeder>();
+            menuSeeder.GenerateDataAsync().Wait();
+        }
         return host;
     }
 
