@@ -686,6 +686,18 @@ namespace EB.Persistence.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
+                    b.Property<bool>("HasDeleteAccess")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("HasReadAccess")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("HasUpdateAccess")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("HasWriteAccess")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Icon")
                         .HasColumnType("text");
 

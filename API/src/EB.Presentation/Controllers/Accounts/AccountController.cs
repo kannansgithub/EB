@@ -1,6 +1,5 @@
 ﻿using EB.Application.Features.Accounts.Commands;
 using EB.Domain.Constants;
-using EB.Presentation.Controllers;
 using EB.Presentation.Shared.Exceptions;
 using EB.Presentation.Shared.Filters;
 using EB.Presentation.Shared.Models;

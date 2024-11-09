@@ -15,6 +15,7 @@ public class UnitOfWork(
     ICounterRepository counters,
     ICustomerRepository customers,
     IImageRepository images,
+    IMenuRepository menus,
     IProductRepository products,
     IPurchaseItemRepository purchaseItems,
     IPurchaseOrderReposirory purchaseOrders,
@@ -40,6 +41,7 @@ public class UnitOfWork(
     public ICounterRepository Counters => counters;
     public ICustomerRepository Customers => customers;
     public IImageRepository Images => images;
+    public IMenuRepository Menus => menus;
     public IProductRepository Products => products;
     public IPurchaseItemRepository PurchaseItems => purchaseItems;
     public IPurchaseOrderReposirory PurchaseOrders => purchaseOrders;

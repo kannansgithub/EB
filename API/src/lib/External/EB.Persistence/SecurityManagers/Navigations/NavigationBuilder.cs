@@ -1,5 +1,5 @@
-﻿using EB.Domain.Entities;
-using EB.Domain.Repositories;
+﻿using EB.Domain.Abstrations;
+using EB.Domain.Services;
 
 namespace EB.Persistence.SecurityManagers.Navigations
 {
@@ -127,9 +127,9 @@ namespace EB.Persistence.SecurityManagers.Navigations
 
 
 
-        public static async Task<ICollection<Menu>> BuildFinalNavigations(IMenuRepository repository, List<string> roles, CancellationToken token=default)
+        public static async Task<ICollection<MenuModel>> BuildFinalNavigations(IMenuService service, List<string> roles, CancellationToken token=default)
         {
-            var menus =await repository.GetAllAsync(roles, token);
+            var menus =await service.GetAllAsync(roles, token);
            
             return menus ?? [];
         }

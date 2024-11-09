@@ -9,17 +9,27 @@ public class MainNavDto(
     string name,
     string caption,
     string url,
+    string icon,
     bool isAuthorized = false,
     int index = 1,
-    int parentIndex = 0)
+    int parentIndex = 0,
+    bool hasReadAccess = false,
+    bool hasUpdateAccess = false,
+    bool hasWriteAccess = false,
+    bool hasDeleteAccess = false
+    )
 {
     public string Name { get; init; } = name;
     public string Caption { get; init; } = caption;
     public string Url { get; init; } = url;
     public bool IsAuthorized { get; init; } = isAuthorized;
-    public List<MainNavDto> Children { get; set; } = new List<MainNavDto>();
+    public List<MainNavDto> Children { get; set; } = [];
     public int Index { get; init; } = index;
     public int ParentIndex { get; init; } = parentIndex;
+    public bool HasReadAccess { get; init; } = hasReadAccess;
+    public bool HasWriteAccess { get; init; } = hasWriteAccess;
+    public bool HasUpdateAccess { get; init; } = hasUpdateAccess;
+    public bool HasDeleteAccess { get; init; } = hasDeleteAccess;
 
     public void AddChild(MainNavDto child)
     {

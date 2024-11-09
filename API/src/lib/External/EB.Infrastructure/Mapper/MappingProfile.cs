@@ -16,5 +16,8 @@ public class MappingProfile:Profile
         CreateMap<StoreResponse, Store>().ReverseMap();
         CreateMap<StoreResponse, Address>().ReverseMap();
 
+        CreateMap<Menu, MenuModel>().ReverseMap();
+        CreateMap<MenuRequest, Menu>().ReverseMap();
+
     }
 }

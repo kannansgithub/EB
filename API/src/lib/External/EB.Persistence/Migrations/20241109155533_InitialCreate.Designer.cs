@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EB.Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241108190813_InitialCreate")]
+    [Migration("20241109155533_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -688,6 +688,18 @@ namespace EB.Persistence.Migrations
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
+
+                    b.Property<bool>("HasDeleteAccess")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("HasReadAccess")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("HasUpdateAccess")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("HasWriteAccess")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Icon")
                         .HasColumnType("text");

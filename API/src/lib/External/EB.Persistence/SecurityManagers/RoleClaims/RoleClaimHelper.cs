@@ -1,6 +1,6 @@
 ﻿
 using EB.Domain.Repositories;
-using EB.Persistence.Repositories;
+using EB.Domain.Services;
 using EB.Persistence.SecurityManagers.AspNetIdentity;
 using EB.Persistence.SecurityManagers.Navigations;
 using Microsoft.AspNetCore.Identity;
@@ -11,11 +11,11 @@ namespace EB.Persistence.SecurityManagers.RoleClaims;
 
 public static class RoleClaimHelper
 {
-    public static async Task<List<string>> GetPermissionClaims(IMenuRepository repository, List<string> roles)
+    public static async Task<List<string>> GetPermissionClaims(IMenuService menuService, List<string> roles)
     {
         var claims = new List<string>();
         var menuList = await NavigationBuilder
-            .BuildFinalNavigations(repository, roles);
+            .BuildFinalNavigations(menuService, roles);
         foreach (var item in menuList
             .SelectMany(x => x.Children))
         {
@@ -29,9 +29,9 @@ public static class RoleClaimHelper
 
     }
 
-    public static async Task AddAllClaimsToUser(UserManager<ApplicationUser> userManager, ApplicationUser user, IMenuRepository _menuRepository)
+    public static async Task AddAllClaimsToUser(UserManager<ApplicationUser> userManager, ApplicationUser user, IMenuService menuService)
     {
-        foreach (var item in (await GetPermissionClaims(_menuRepository, ["SuperAdmin"])))
+        foreach (var item in (await GetPermissionClaims(menuService, ["SuperAdmin"])))
         {
             await userManager.AddClaimAsync(user, new Claim("Permission", item));
         }

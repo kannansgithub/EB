@@ -12,6 +12,7 @@ public interface IUnitOfWork : IDisposable
     ICounterRepository Counters { get; }
     ICustomerRepository Customers { get; }
     IImageRepository Images { get; }
+    IMenuRepository Menus { get; }
     IProductRepository Products { get; }
     IPurchaseItemRepository PurchaseItems { get; }
     IPurchaseOrderReposirory PurchaseOrders { get; }

@@ -7,11 +7,27 @@ public class NavigationItem
     public string Url { get; set; }
     public string? Icon { get; set; }
     public bool IsAuthorized { get; set; }
+    public bool HasReadAccess { get; set; }
+    public bool HasWriteAccess { get; set; }
+    public bool HasUpdateAccess { get; set; }
+    public bool HasDeleteAccess { get; set; }
     public List<NavigationItem> Children { get; set; } = [];
     public int Index { get; set; }
     public int ParentIndex { get; set; }
 
-    public NavigationItem(string name, string caption, string url, string? icon , bool isAuthorized = false, int index = 1, int parentIndex = 0)
+    public NavigationItem(
+        string name, 
+        string caption, 
+        string url, 
+        string? icon , 
+        bool isAuthorized = false, 
+        int index = 1, 
+        int parentIndex = 0, 
+        bool hasReadAccess = false,
+        bool hasWriteAccess = false,
+        bool hasUpdateAccess = false,
+        bool hasDeleteAccess = false
+        )
     {
         Name = name;
         Caption = caption;
@@ -20,6 +36,11 @@ public class NavigationItem
         Index = index;
         ParentIndex = parentIndex;
         Icon = icon;
+        HasDeleteAccess = hasDeleteAccess;
+        HasUpdateAccess = hasUpdateAccess;
+        HasWriteAccess = hasWriteAccess;
+        HasReadAccess = hasReadAccess;
+
     }
 
     public void AddChild(NavigationItem child)

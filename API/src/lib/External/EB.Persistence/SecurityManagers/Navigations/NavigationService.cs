@@ -1,6 +1,6 @@
 ﻿using EB.Application.Services.Externals;
 using EB.Application.Shared.Contracts;
-using EB.Domain.Repositories;
+using EB.Domain.Services;
 using EB.Persistence.SecurityManagers.AspNetIdentity;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
@@ -11,13 +11,13 @@ public class NavigationService(
     UserManager<ApplicationUser> userManager,
     RoleManager<IdentityRole> roleManager,
     IRoleClaimService roleClaimService,
-    IMenuRepository menuRepository
+    IMenuService menuService
         ) : INavigationService
 {
     private readonly UserManager<ApplicationUser> _userManager = userManager;
     private readonly RoleManager<IdentityRole> _roleManager = roleManager;
     private readonly IRoleClaimService _roleClaimService = roleClaimService;
-    private readonly IMenuRepository _menuRepository = menuRepository;
+    private readonly IMenuService _menuService = menuService;
 
     private static List<TDestination> MapResult<TSource, TDestination>(
             List<TSource> sourceItems,
@@ -54,7 +54,7 @@ public class NavigationService(
         var navItems = new List<NavigationItem>();
         var claims = await _roleClaimService.GetClaimListByUserAsync(userId);
         var roles = await _roleClaimService.GetRoleListByUserAsync(userId);
-        var finalNavigations =await NavigationBuilder.BuildFinalNavigations(_menuRepository, roles);
+        var finalNavigations =await NavigationBuilder.BuildFinalNavigations(_menuService, roles);
         int parentIndex = 1;
         foreach (var navigation in finalNavigations)
         {
@@ -62,7 +62,11 @@ public class NavigationService(
                 navigation.Name,
                 navigation.Caption,
                 navigation.URI,
-                navigation.Icon
+                navigation.Icon,
+                hasReadAccess:navigation.HasReadAccess,
+                hasWriteAccess:navigation.HasWriteAccess,
+                hasUpdateAccess:navigation.HasUpdateAccess,
+                hasDeleteAccess:navigation.HasDeleteAccess
                 )
             {
                 ParentIndex = 0,
@@ -78,7 +82,11 @@ public class NavigationService(
                     child.Caption,
                     child.URI,
                     navigation.Icon,
-                    isAuthorized
+                    isAuthorized,
+                    hasReadAccess: navigation.HasReadAccess,
+                    hasWriteAccess: navigation.HasWriteAccess,
+                    hasUpdateAccess: navigation.HasUpdateAccess,
+                    hasDeleteAccess: navigation.HasDeleteAccess
                     )
                 {
                     ParentIndex = parentIndex,
@@ -109,7 +117,7 @@ public class NavigationService(
 
         var results = MapResult(
                 navItems,
-                item => new MainNavDto(item.Name, item.Caption, item.Url, item.IsAuthorized, item.Index, item.ParentIndex),
+                item => new MainNavDto(item.Name, item.Caption, item.Url, item.Icon?? "BiMessageSquareError", item.IsAuthorized, item.Index, item.ParentIndex, item.HasReadAccess, item.HasUpdateAccess, item.HasWriteAccess, item.HasDeleteAccess),
                 item => item.Children,
                 (parent, children) => parent.Children = children
             );

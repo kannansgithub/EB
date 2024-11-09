@@ -42,6 +42,9 @@
     <Folder Include="Features\Customer\Validators\" />
     <Folder Include="Features\Image\Dtos\" />
     <Folder Include="Features\Image\Validators\" />
+    <Folder Include="Features\Menus\Dtos\" />
+    <Folder Include="Features\Menus\Validators\" />
+    <Folder Include="Features\Menus\Queries\" />
     <Folder Include="Features\NumberSequence\Dtos\" />
     <Folder Include="Features\NumberSequence\Validators\" />
     <Folder Include="Features\Product\Dtos\" />

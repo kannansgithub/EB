@@ -8,12 +8,7 @@ using EB.Infrastructure.LoggingManagers.Serilogs;
 using EB.Infrastructure.NumberSequenceManagers;
 using EB.Infrastructure.Services;
 using EB.Persistence;
-using EB.Persistence.DataAccessManagers.EFCores;
 using EB.Persistence.Repositories;
-using EB.Persistence.SecurityManagers.AspNetIdentity;
-using EB.Persistence.SecurityManagers.Navigations;
-using EB.Persistence.SecurityManagers.RoleClaims;
-using EB.Persistence.SecurityManagers.Tokens;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,7 +20,7 @@ public static class ServiceExtension
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        //services.AddAutoMapper(typeof(ServiceExtension).Assembly);
+        services.AddAutoMapper(typeof(ServiceExtension).Assembly);
         services.AddPersistence(configuration);
         services.AddStackExchangeRedisCache(options =>
         {
@@ -45,6 +40,7 @@ public static class ServiceExtension
         services.AddScoped<ICounterService, CounterService>();
         services.AddScoped<ICustomerService, CustomerService>();
         //services.AddScoped<IImageService, ImageService>();
+        services.AddScoped<IMenuService, MenuService>();
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<IPurchaseItemService, PurchaseItemService>();
         services.AddScoped<IPurchaseOrderReposirory, PurchaseOrderReposirory>();

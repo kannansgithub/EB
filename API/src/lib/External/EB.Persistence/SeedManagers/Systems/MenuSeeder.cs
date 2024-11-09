@@ -17,17 +17,8 @@ public class MenuSeeder(
       {
         "Name": "Dashboard",
         "Caption": "Dashboard",
-        "URI": "#",
+        "URI": "/Dashboards",
         "Icon": "BiSolidDashboard",
-        "Children": [
-          {
-            "Name": "Dashboard",
-            "Caption": "Dashboard",
-            "URI": "/Dashboards",
-            "Icon": "BiBarChartAlt",
-    
-          }
-        ]
       },
       {
         "Name": "Configuration",
@@ -60,7 +51,6 @@ public class MenuSeeder(
             {
                await InsertMenuAsync(contributor);
             }
-            await _unitOfWork.SaveAsync();
 
         }
     }
@@ -74,22 +64,27 @@ public class MenuSeeder(
         if (entity == null)
         {
             menu.Roles = ["SuperAdmin"];
+            menu.HasReadAccess = true;
+            menu.HasWriteAccess = true;
+            menu.HasUpdateAccess = true;
+            menu.HasDeleteAccess = true;
             // First, add the parent menu
             await _repository.CreateAsync(menu);
+            await _unitOfWork.SaveAsync();
 
-            // If the menu has children, insert them recursively
-            if (menu.Children != null && menu.Children.Count != 0)
-            {
-                foreach (var child in menu.Children)
-                {
-                    // Set the ParentId of the child if necessary (assuming you have a ParentId column)
-                    // If you have a self-referencing relationship, make sure to set the ParentId or Parent reference properly.
-                    child.ParentId = menu.Id;
-                    child.Roles = ["SuperAdmin"];
-                    // Recursively insert the child menu
-                    await InsertMenuAsync(child);
-                }
-            }
+            //// If the menu has children, insert them recursively
+            //if (menu.Children != null && menu.Children.Count != 0)
+            //{
+            //    foreach (var child in menu.Children)
+            //    {
+            //        // Set the ParentId of the child if necessary (assuming you have a ParentId column)
+            //        // If you have a self-referencing relationship, make sure to set the ParentId or Parent reference properly.
+            //        child.ParentId = menu.Id;
+            //        child.Roles = ["SuperAdmin"];
+            //        // Recursively insert the child menu
+            //        await InsertMenuAsync(child);
+            //    }
+            //}
         }
 
     }

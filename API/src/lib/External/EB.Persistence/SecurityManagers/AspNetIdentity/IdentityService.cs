@@ -6,9 +6,8 @@ using EB.Application.Services.Externals;
 using EB.Application.Services.Repositories;
 using EB.Application.Shared.Contracts;
 using EB.Domain.Entities;
-using EB.Domain.Repositories;
+using EB.Domain.Services;
 using EB.Persistence.DataAccessManagers.EFCores.Contexts;
-using EB.Persistence.Repositories;
 using EB.Persistence.SecurityManagers.RoleClaims;
 using EB.Persistence.SecurityManagers.Tokens;
 using Microsoft.AspNetCore.Authorization;
@@ -35,7 +34,7 @@ public class IdentityService : IIdentityService
     private readonly INavigationService _navigationService;
     private readonly IRoleClaimService _roleClaimService;
     private readonly QueryContext _queryContext;
-    private readonly IMenuRepository _menuRepository;
+    private readonly IMenuService _menuService;
 
     public IdentityService(
         IOptions<IdentitySettings> identitySettings,
@@ -50,7 +49,7 @@ public class IdentityService : IIdentityService
         INavigationService navigationService,
         IRoleClaimService roleClaimService,
         QueryContext queryContext,
-        IMenuRepository menuRepository
+        IMenuService menuService
         )
     {
         _identitySettings = identitySettings.Value;
@@ -65,7 +64,7 @@ public class IdentityService : IIdentityService
         _navigationService = navigationService;
         _roleClaimService = roleClaimService;
         _queryContext = queryContext;
-        _menuRepository = menuRepository;
+        _menuService = menuService;
     }
 
     public async Task<GetClaimsByUserResult> GetClaimsByUserAsync(
@@ -748,7 +747,6 @@ public class IdentityService : IIdentityService
             Email = user.Email,
             FirstName = user.FirstName,
             LastName = user.LastName,
-            UserClaims = userClaims.Select(x => x.Value).ToList(),
             MainNavigations = mainNavs.MainNavigations
         };
     }
@@ -810,7 +808,6 @@ public class IdentityService : IIdentityService
             Email = user.Email,
             FirstName = user.FirstName,
             LastName = user.LastName,
-            UserClaims = userClaims.Select(x => x.Value).ToList(),
             MainNavigations = mainNavs.MainNavigations
         };
     }
@@ -825,7 +822,7 @@ public class IdentityService : IIdentityService
         {
             throw new IdentityException($"Role '{role}' not found.");
         }
-        var response =await RoleClaimHelper.GetPermissionClaims(_menuRepository, [role]);
+        var response =await RoleClaimHelper.GetPermissionClaims(_menuService, [role]);
         if (!response.Any(x => claims.Contains(x)))
         {
             throw new IdentityException($"Contain not valid claims: {string.Join("; ", claims.Select(x => x))}.");
@@ -857,7 +854,7 @@ public class IdentityService : IIdentityService
         cancellationToken.ThrowIfCancellationRequested();
 
         var identityRole = await _roleManager.FindByNameAsync(role) ?? throw new IdentityException($"Role '{role}' not found.");
-        var response = await RoleClaimHelper.GetPermissionClaims(_menuRepository, [role]);
+        var response = await RoleClaimHelper.GetPermissionClaims(_menuService, [role]);
 
         if (!response.Any(x => claims.Contains(x)))
         {
