@@ -9,45 +9,53 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import * as z from 'zod';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signIn } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
-import * as z from 'zod';
 import toasterMessage from '@/lib/tost-alert';
 import { ThemeSwitcher } from '@/components/layout/themes/theme-switch';
 import Icon from '@/components/custom/icon';
+import FormError from '@/components/custom/form-error';
+import FormSuccess from '@/components/custom/form-success';
+import { login } from '@/actions/login';
+import { LoginFormSchema } from '@/forms/schemas/login-form-schema';
 
-const formSchema = z.object({
-  email: z.string().email({ message: 'Enter a valid email address' }),
-  password: z.string(),
-});
-
-type UserFormValue = z.infer<typeof formSchema>;
+type UserFormValue = z.infer<typeof LoginFormSchema>;
+const defaultValues = {
+  email: 'admin@root.com',
+  password: '123456',
+};
 
 export default function UserAuthForm() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl');
   const [loading, startTransition] = useTransition();
-  const defaultValues = {
-    email: 'admin@root.com',
-    password: '123456',
-  };
+
   const form = useForm<UserFormValue>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(LoginFormSchema),
     defaultValues,
   });
 
   const onSubmit = async (data: UserFormValue) => {
-    startTransition(() => {
-      signIn('credentials', {
-        email: data.email,
-        password: data.password,
-        callbackUrl: callbackUrl ?? '/dashboard',
-      });
-      toasterMessage.error('Signed In Successfully!');
+    startTransition(async () => {
+      const response = await login(data, callbackUrl);
+      if (response.errors) {
+        toasterMessage.error(response.message);
+      } else {
+        toasterMessage.success(response.message);
+      }
     });
+
+    // console.log('result: ', result);
+    // if (result?.error) {
+    //   toasterMessage.error('Login failed! Please check your credentials.');
+    // } else {
+    //   toasterMessage.success('Signed In Successfully!');
+    // }
   };
 
   return (
@@ -95,6 +103,8 @@ export default function UserAuthForm() {
           />
           <ThemeSwitcher />
           <Icon iconName="BiMenuAltLeft" set="bi" size={40} color="blue" />
+          <FormError message="Oops somthing bad happend" />
+          <FormSuccess message="Email Sent Successfully!" />
           <Button disabled={loading} className="ml-auto w-full" type="submit">
             Signin
           </Button>

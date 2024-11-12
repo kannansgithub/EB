@@ -1,64 +1,49 @@
-import '../envConfig';
 import CredentialProvider from 'next-auth/providers/credentials';
-import type { NextAuthConfig, User } from 'next-auth';
+//@ts-expect-error "This is a bug in the types"
+import type { NextAuthConfig } from 'next-auth';
 import axios from 'axios';
-import toasterMessage from './lib/tost-alert';
-const authConfig = {
-  session: {
-    strategy: 'jwt',
-  },
+export default {
   providers: [
     CredentialProvider({
       name: 'Credentials',
       credentials: {
-        username: { label: 'Username', type: 'text', placeholder: 'jsmith' },
+        username: { label: 'Username', type: 'text', placeholder: 'kannan' },
         password: { label: 'Password', type: 'password' },
       },
-      async authorize(credentials, req) {
-        const { email, password } = credentials as {
-          email: string;
-          password: string;
-        };
-        try {
-          const res = await axios.post(
-            'http://localhost:5181/api/Account/Login',
-            {
-              email,
-              password,
-            }
-          );
-          console.log('Response Data: ', res.data?.message);
-          if (res.data.code === 200) {
-            const user = res?.data?.content;
-            if (user) {
-              return user;
-            } else {
-              return null;
-            }
-          } else {
-            toasterMessage.error(res.data.message);
+      async authorize(credentials) {
+        const { email, password } = credentials;
+        const res = await axios.post(
+          `${process.env.API_ENPOINT}/api/Account/Login`,
+          {
+            email,
+            password,
           }
-        } catch {
-          toasterMessage.error('Something went wrong');
+        );
+        if (res.data.code === 200) {
+          const user = res?.data?.content;
+          console.log('user: ', user);
+          if (user) {
+            return user;
+          } else {
+            return null;
+          }
+        } else {
+          return null;
         }
-        // const user = res.data;
       },
     }),
   ],
   pages: {
-    error: '/',
     signIn: '/',
     signOut: '/',
   },
-  secret: 'DSHFSKDJHF345345JH34543',
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user }: unknown) {
       return { ...token, ...user };
     },
-    async session({ session }) {
+    async session({ session, token }: unknown) {
+      session.user = token;
       return session;
     },
   },
 } satisfies NextAuthConfig;
-
-export default authConfig;

@@ -1,9 +1,10 @@
 import NextAuth from 'next-auth';
-import authConfig from './auth.config';
+import authConfig from '@/auth.config';
+
 // import { DEFAULT_REDIRECT, PUBLIC_ROUTES, ROOT } from './lib/routes';
 // import { NextRequest } from 'next/server';
 // export const { auth, handlers, signOut, signIn } = NextAuth(authConfig);
-export const { auth, handlers, signOut, signIn } = NextAuth(authConfig);
+// export const { auth, handlers, signOut, signIn } = NextAuth(authConfig);
 
 // export default auth((req: NextRequest) => {
 //   const { nextUrl } = req;
@@ -21,3 +22,5 @@ export const { auth, handlers, signOut, signIn } = NextAuth(authConfig);
 // export const config = {
 //   matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
 // };
+
+export const { auth, handlers, signIn, signOut } = NextAuth(authConfig);
