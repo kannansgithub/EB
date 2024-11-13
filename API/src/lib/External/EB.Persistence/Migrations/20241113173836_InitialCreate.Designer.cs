@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EB.Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241109155533_InitialCreate")]
+    [Migration("20241113173836_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -706,6 +706,9 @@ namespace EB.Persistence.Migrations
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
+
+                    b.Property<string>("Label")
+                        .HasColumnType("text");
 
                     b.Property<string>("MenuId")
                         .HasColumnType("text");
@@ -1990,7 +1993,7 @@ namespace EB.Persistence.Migrations
             modelBuilder.Entity("EB.Domain.Entities.Menu", b =>
                 {
                     b.HasOne("EB.Domain.Entities.Menu", null)
-                        .WithMany("Children")
+                        .WithMany("Sub")
                         .HasForeignKey("MenuId");
                 });
 
@@ -2182,7 +2185,7 @@ namespace EB.Persistence.Migrations
 
             modelBuilder.Entity("EB.Domain.Entities.Menu", b =>
                 {
-                    b.Navigation("Children");
+                    b.Navigation("Sub");
                 });
 
             modelBuilder.Entity("EB.Domain.Entities.Product", b =>

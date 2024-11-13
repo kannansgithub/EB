@@ -17,7 +17,7 @@ public class MenuSeeder(
       {
         "Name": "Dashboard",
         "Caption": "Dashboard",
-        "URI": "/Dashboards",
+        "URI": "/dashboard",
         "Icon": "BiSolidDashboard",
       },
       {
@@ -25,11 +25,11 @@ public class MenuSeeder(
         "Caption": "Configuration",
         "URI": "#",
         "Icon": "BiCog",
-        "Children": [
+        "Sub": [
           {
             "Name": "Menu",
             "Caption": "Menu",
-            "URI": "/Menus",
+            "URI": "/menus",
             "Icon": "BiMenuAltLeft",
     
           },

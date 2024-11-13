@@ -62,6 +62,7 @@ public class NavigationService(
                 navigation.Name,
                 navigation.Caption,
                 navigation.URI,
+                navigation.Label,
                 navigation.Icon,
                 hasReadAccess:navigation.HasReadAccess,
                 hasWriteAccess:navigation.HasWriteAccess,
@@ -73,7 +74,7 @@ public class NavigationService(
                 Index = parentIndex
             };
             int childIndex = 1;
-            foreach (var child in navigation.Children)
+            foreach (var child in navigation.Sub)
             {
                 var isAuthorized = CheckAuthorization(claims, child.Name);
 
@@ -81,12 +82,13 @@ public class NavigationService(
                     child.Name,
                     child.Caption,
                     child.URI,
-                    navigation.Icon,
+                    child.Label,
+                    child.Icon,
                     isAuthorized,
-                    hasReadAccess: navigation.HasReadAccess,
-                    hasWriteAccess: navigation.HasWriteAccess,
-                    hasUpdateAccess: navigation.HasUpdateAccess,
-                    hasDeleteAccess: navigation.HasDeleteAccess
+                    hasReadAccess: child.HasReadAccess,
+                    hasWriteAccess: child.HasWriteAccess,
+                    hasUpdateAccess: child.HasUpdateAccess,
+                    hasDeleteAccess: child.HasDeleteAccess
                     )
                 {
                     ParentIndex = parentIndex,
@@ -117,9 +119,9 @@ public class NavigationService(
 
         var results = MapResult(
                 navItems,
-                item => new MainNavDto(item.Name, item.Caption, item.Url, item.Icon?? "BiMessageSquareError", item.IsAuthorized, item.Index, item.ParentIndex, item.HasReadAccess, item.HasUpdateAccess, item.HasWriteAccess, item.HasDeleteAccess),
+                item => new MainNavDto(item.Name, item.Caption, item.Url,item.Label??string.Empty, item.Icon?? "BiMessageSquareError", item.IsAuthorized, item.Index, item.ParentIndex, item.HasReadAccess, item.HasUpdateAccess, item.HasWriteAccess, item.HasDeleteAccess),
                 item => item.Children,
-                (parent, children) => parent.Children = children
+                (parent, children) => parent.Sub = children
             );
 
         cancellationToken.ThrowIfCancellationRequested();

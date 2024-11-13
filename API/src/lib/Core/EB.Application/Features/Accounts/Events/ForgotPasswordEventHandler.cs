@@ -17,7 +17,7 @@ public class ForgotPasswordEventHandler(IEmailService emailService) : INotificat
         var encodeCallbackUrl = $"{HtmlEncoder.Default.Encode(callbackUrl)}";
 
         var emailSubject = $"Forgot password confirmation";
-        var emailMessage = $"Your temporary password is: <strong>{notification.ClearTempPassword}</strong>. Please confirm reset your password by <a href='{encodeCallbackUrl}'>clicking here</a>.";
+        var emailMessage = $"Your temporary password is: <strong>{notification.ClearTempPassword}</strong>. Please confirm reset your password by <a name='{encodeCallbackUrl}'>clicking here</a>.";
 
         await _emailService.SendEmailAsync(notification.Email, emailSubject, emailMessage);
     }

@@ -17,7 +17,7 @@ public static class RoleClaimHelper
         var menuList = await NavigationBuilder
             .BuildFinalNavigations(menuService, roles);
         foreach (var item in menuList
-            .SelectMany(x => x.Children))
+            .SelectMany(x => x.Sub))
         {
             claims.Add($"{item.Name}:Create");
             claims.Add($"{item.Name}:Read");

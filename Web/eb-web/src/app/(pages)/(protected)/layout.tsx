@@ -3,9 +3,11 @@ import { useSession } from 'next-auth/react';
 
 import RootContent from '@/components/custom/root';
 const AppLayout = ({ children }: { children: React.ReactNode }) => {
-  const { status: sessionStatus } = useSession();
+  const { status: sessionStatus, data: session } = useSession();
   const authorized = sessionStatus === 'authenticated';
   const loading = sessionStatus === 'loading';
+  console.log(session);
+  console.log(sessionStatus);
   if (typeof window !== 'undefined' && loading) return null;
   if (authorized) {
     return (

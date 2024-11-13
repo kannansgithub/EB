@@ -6,6 +6,7 @@ public class NavigationItem
     public string Caption { get; set; }
     public string Url { get; set; }
     public string? Icon { get; set; }
+    public string? Label { get; set; }
     public bool IsAuthorized { get; set; }
     public bool HasReadAccess { get; set; }
     public bool HasWriteAccess { get; set; }
@@ -19,6 +20,7 @@ public class NavigationItem
         string name, 
         string caption, 
         string url, 
+        string? label , 
         string? icon , 
         bool isAuthorized = false, 
         int index = 1, 
@@ -35,6 +37,7 @@ public class NavigationItem
         IsAuthorized = isAuthorized;
         Index = index;
         ParentIndex = parentIndex;
+        Label = label;
         Icon = icon;
         HasDeleteAccess = hasDeleteAccess;
         HasUpdateAccess = hasUpdateAccess;

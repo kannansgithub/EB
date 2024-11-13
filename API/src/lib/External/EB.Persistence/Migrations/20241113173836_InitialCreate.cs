@@ -135,6 +135,7 @@ namespace EB.Persistence.Migrations
                     Name = table.Column<string>(type: "text", nullable: false),
                     Caption = table.Column<string>(type: "text", nullable: false),
                     URI = table.Column<string>(type: "text", nullable: false),
+                    Label = table.Column<string>(type: "text", nullable: true),
                     Icon = table.Column<string>(type: "text", nullable: true),
                     ParentId = table.Column<string>(type: "text", nullable: true),
                     HasReadAccess = table.Column<bool>(type: "boolean", nullable: false),

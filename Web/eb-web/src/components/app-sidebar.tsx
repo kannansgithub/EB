@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { IconChevronsLeft, IconMenu2, IconX } from '@tabler/icons-react';
 import { cn } from '@/lib/utils';
-import { sidelinks } from '@/data/sidelinks';
+// import { sidelinks } from '@/data/sidelinks';
 import { Layout } from './custom/layout';
 import { Button } from './custom/button';
 import Nav from './nav';
@@ -116,7 +116,7 @@ export default function AppSidebar({
           }`}
           closeNav={() => setNavOpened(false)}
           isCollapsed={isCollapsed}
-          links={sidelinks}
+          // links={sidelinks}
         />
 
         {/* Scrollbar width toggle button */}

@@ -14,7 +14,7 @@ public class MenuRepository(DataContext dbContext) : GenericRepository<Menu>(dbC
     {
         var menus = _dbContext.Menu
                             .Where(x=>x.IsDeleted==false)
-                            .Include(menu => menu.Children) // Eagerly load children
+                            .Include(menu => menu.Sub) // Eagerly load children
                             .AsQueryable();
         var filteredMenus = await GetMenusWithMatchingRolesAsync(menus, roles, token);
         return filteredMenus;
@@ -35,9 +35,9 @@ public class MenuRepository(DataContext dbContext) : GenericRepository<Menu>(dbC
                 }
 
                 // Recursively check the children
-                if (menu.Children.Count != 0)
+                if (menu.Sub.Count != 0)
                 {
-                    var filteredChildren = await FilterMenusAsync(menu.Children, token); // Recursive call to get filtered children asynchronously
+                    var filteredChildren = await FilterMenusAsync(menu.Sub, token); // Recursive call to get filtered children asynchronously
                     result.AddRange(filteredChildren);
                 }
             }

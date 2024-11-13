@@ -9,12 +9,8 @@ import { topNavLinks } from '@/data/sidelinks';
 import { Search } from '../search';
 import { ThemeSwitcher } from '../layout/themes/theme-switch';
 import { UserNav } from '../user-nav';
-import { signOut } from '@/auth';
 
 const RootContent = ({ children }: { children: React.ReactNode }) => {
-  const handleSignout = async () => {
-    await signOut();
-  };
   const [isCollapsed, setIsCollapsed] = useIsCollapsed();
   return (
     <div className="relative h-full overflow-hidden bg-background">
@@ -32,7 +28,7 @@ const RootContent = ({ children }: { children: React.ReactNode }) => {
             <div className="ml-auto flex items-center space-x-4">
               <Search />
               <ThemeSwitcher />
-              <UserNav onSignOut={() => handleSignout()} />
+              <UserNav />
             </div>
           </Layout.Header>
           <Layout.Body>{children}</Layout.Body>

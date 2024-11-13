@@ -23,7 +23,7 @@ public class RegisterUserEventHandler(IEmailService emailService) : INotificatio
             var encodeCallbackUrl = $"{HtmlEncoder.Default.Encode(callbackUrl)}";
 
             var emailSubject = $"Confirm your email";
-            var emailMessage = $"Please confirm your account by <a href='{encodeCallbackUrl}'>clicking here</a>.";
+            var emailMessage = $"Please confirm your account by <a name='{encodeCallbackUrl}'>clicking here</a>.";
 
             await _emailService.SendEmailAsync(notification.Email, emailSubject, emailMessage);
 

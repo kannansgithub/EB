@@ -9,6 +9,7 @@ public class MainNavDto(
     string name,
     string caption,
     string url,
+    string label,
     string icon,
     bool isAuthorized = false,
     int index = 1,
@@ -19,21 +20,23 @@ public class MainNavDto(
     bool hasDeleteAccess = false
     )
 {
+    public int Index { get; init; } = index;
+    public int ParentIndex { get; init; } = parentIndex;
     public string Name { get; init; } = name;
     public string Caption { get; init; } = caption;
     public string Url { get; init; } = url;
+    public string Label { get; init; } = label;
+    public string Icon { get; init; } = icon;
     public bool IsAuthorized { get; init; } = isAuthorized;
-    public List<MainNavDto> Children { get; set; } = [];
-    public int Index { get; init; } = index;
-    public int ParentIndex { get; init; } = parentIndex;
     public bool HasReadAccess { get; init; } = hasReadAccess;
     public bool HasWriteAccess { get; init; } = hasWriteAccess;
     public bool HasUpdateAccess { get; init; } = hasUpdateAccess;
     public bool HasDeleteAccess { get; init; } = hasDeleteAccess;
+    public List<MainNavDto> Sub { get; set; } = [];
 
     public void AddChild(MainNavDto child)
     {
-        Children.Add(child);
+        Sub.Add(child);
     }
 }
 

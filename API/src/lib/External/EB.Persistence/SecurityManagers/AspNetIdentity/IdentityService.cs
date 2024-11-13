@@ -723,12 +723,11 @@ public class IdentityService : IIdentityService
             throw new UnauthorizedAccessException("Invalid login credentials. NotSucceeded.");
         }
 
-
         var mainNavs = await _navigationService.GenerateMainNavAsync(user.Id, cancellationToken);
         var userClaims = await _roleClaimService.GetClaimListByUserAsync(user.Id);
         var accessToken = _tokenService.GenerateToken(user, userClaims);
         var refreshToken = _tokenService.GenerateRefreshToken();
-
+        var roles = await _userManager.GetRolesAsync(user);
         var tokens = await _tokenRepository.GetByUserIdAsync(user.Id, cancellationToken);
         foreach (var tokenItem in tokens)
         {
@@ -743,22 +742,39 @@ public class IdentityService : IIdentityService
         {
             AccessToken = accessToken,
             RefreshToken = refreshToken,
-            UserId = user.Id,
             Email = user.Email,
-            FirstName = user.FirstName,
-            LastName = user.LastName,
+            Name = $"{user.FirstName} {user.LastName}",
+            ProfileChar = GetProfileChar(user.FirstName,user.LastName),
+            UserRoles = roles?.ToList(),
             MainNavigations = mainNavs.MainNavigations
         };
     }
+    private static string GetProfileChar(string? firstName, string? lastName)
+    {
+        StringBuilder sb = new();
+        if (!string.IsNullOrEmpty(firstName) && !string.IsNullOrEmpty(lastName))
+        {
+            sb.Append(firstName?.Take(1)?.FirstOrDefault());
+            sb.Append(lastName?.Take(1)?.FirstOrDefault());
 
+        }
+        if (!string.IsNullOrEmpty(firstName) && string.IsNullOrEmpty(lastName))
+        {
+            sb.Append(string.Join("",firstName.Take(2).ToList()));
+        }
+        if (string.IsNullOrEmpty(firstName) && !string.IsNullOrEmpty(lastName))
+        {
+            sb.Append(string.Join("", lastName.Take(2).ToList()));
+        }
+        if (string.IsNullOrEmpty(firstName) && string.IsNullOrEmpty(lastName))
+        {
+            sb.Append("EB");
+        }
+        return sb.ToString().ToUpperInvariant();
+    }
     public async Task<LogoutUserResult> LogoutAsync(string userId, CancellationToken cancellationToken = default)
     {
-        var user = await _userManager.FindByIdAsync(userId);
-        if (user == null)
-        {
-            throw new IdentityException($"Invalid userId: {userId}");
-        }
-
+        _ = await _userManager.FindByIdAsync(userId) ?? throw new IdentityException($"Invalid userId: {userId}");
         var tokens = await _tokenRepository.GetByUserIdAsync(userId, cancellationToken);
         foreach (var token in tokens)
         {
@@ -780,16 +796,9 @@ public class IdentityService : IIdentityService
             throw new IdentityException("Refresh token has expired, please re-login");
         }
 
-        var user = await _userManager.FindByIdAsync(token.UserId);
-
-        if (user == null)
-        {
-            throw new IdentityException("Refresh token has expired, please re-login");
-        }
-
-
+        var user = await _userManager.FindByIdAsync(token.UserId) ?? throw new IdentityException("Refresh token has expired, please re-login");
         var mainNavs = await _navigationService.GenerateMainNavAsync(user.Id, cancellationToken);
-        var userClaims = await _roleClaimService.GetClaimListByUserAsync(user.Id);
+        var userClaims = await _roleClaimService.GetClaimListByUserAsync(user.Id, cancellationToken);
         var newAccessToken = _tokenService.GenerateToken(user, userClaims);
         var newRefreshToken = _tokenService.GenerateRefreshToken();
 
@@ -816,12 +825,7 @@ public class IdentityService : IIdentityService
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        var identityRole = await _roleManager.FindByNameAsync(role);
-
-        if (identityRole == null)
-        {
-            throw new IdentityException($"Role '{role}' not found.");
-        }
+        var identityRole = await _roleManager.FindByNameAsync(role) ?? throw new IdentityException($"Role '{role}' not found.");
         var response =await RoleClaimHelper.GetPermissionClaims(_menuService, [role]);
         if (!response.Any(x => claims.Contains(x)))
         {

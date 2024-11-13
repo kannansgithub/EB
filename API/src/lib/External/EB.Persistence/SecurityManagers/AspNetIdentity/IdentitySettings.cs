@@ -8,6 +8,7 @@ public class IdentitySettings
     public UserOptions User { get; init; } = null!;
     public SignInOptions SignIn { get; init; } = null!;
     public DefaultAdminOptions DefaultAdmin { get; init; } = null!;
+    public List<string> DefaultRoles { get; init; } = [];
 
     public class PasswordOptions
     {
@@ -39,5 +40,8 @@ public class IdentitySettings
     {
         public string Email { get; init; } = null!;
         public string Password { get; init; } = null!;
+        public string FirstName { get; init; } = null!;
+        public string LastName { get; init; } = null!;
+        public List<string> Roles { get; init; } = null!;
     }
 }

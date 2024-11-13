@@ -9,11 +9,10 @@ public class LoginUserResult
 {
     public string? AccessToken { get; init; }
     public string? RefreshToken { get; init; }
-    public string? UserId { get; init; }
     public string? Email { get; init; }
-    public string? FirstName { get; init; }
-    public string? LastName { get; init; }
-    public List<string>? UserClaims { get; init; }
+    public string? Name { get; init; }
+    public string? ProfileChar { get; init; }
+    public List<string>? UserRoles { get; init; }
     public List<MainNavDto>? MainNavigations { get; init; }
 }
 

@@ -12,22 +12,17 @@ import { Input } from '@/components/ui/input';
 import * as z from 'zod';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { signIn } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import toasterMessage from '@/lib/tost-alert';
-import { ThemeSwitcher } from '@/components/layout/themes/theme-switch';
-import Icon from '@/components/custom/icon';
-import FormError from '@/components/custom/form-error';
-import FormSuccess from '@/components/custom/form-success';
 import { login } from '@/actions/login';
 import { LoginFormSchema } from '@/forms/schemas/login-form-schema';
 
 type UserFormValue = z.infer<typeof LoginFormSchema>;
 const defaultValues = {
-  email: 'admin@root.com',
-  password: '123456',
+  email: 'admin@email.com',
+  password: 'Admin@123',
 };
 
 export default function UserAuthForm() {
@@ -101,10 +96,6 @@ export default function UserAuthForm() {
               </FormItem>
             )}
           />
-          <ThemeSwitcher />
-          <Icon iconName="BiMenuAltLeft" set="bi" size={40} color="blue" />
-          <FormError message="Oops somthing bad happend" />
-          <FormSuccess message="Email Sent Successfully!" />
           <Button disabled={loading} className="ml-auto w-full" type="submit">
             Signin
           </Button>

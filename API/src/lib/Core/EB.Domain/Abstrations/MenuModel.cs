@@ -4,17 +4,20 @@ public record MenuModel(
     string Name, 
     string Caption, 
     string URI, 
-    string? Icon, 
+    string? Label, 
+    string? Icon,
+    string? ParentId,
     bool HasReadAccess, 
     bool HasWriteAccess,
     bool HasUpdateAccess,
     bool HasDeleteAccess,
     string[] Roles,
-    List<MenuModel> Children);
+    List<MenuModel> Sub);
 public record MenuRequest(
     string Name,
     string Caption,
     string Url,
+    string Label,
     string Icon,
     bool IsAuthorized,
     bool HasReadAccess,
@@ -23,6 +26,6 @@ public record MenuRequest(
     bool HasDeleteAccess,
     int Index,
     int ParentIndex,
-    List<MenuRequest> Children
+    List<MenuRequest> Sub
 );
 

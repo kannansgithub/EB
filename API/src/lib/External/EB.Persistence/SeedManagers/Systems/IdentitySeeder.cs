@@ -7,7 +7,8 @@ namespace EB.Persistence.SeedManagers.Systems;
 public class IdentitySeeder(
     IOptions<IdentitySettings> identitySettings,
     UserManager<ApplicationUser> userManager,
-    RoleManager<IdentityRole> roleManager)
+    RoleManager<IdentityRole> roleManager
+    )
 {
     private readonly IdentitySettings _identitySettings = identitySettings.Value;
     private readonly UserManager<ApplicationUser> _userManager = userManager;
@@ -15,8 +16,7 @@ public class IdentitySeeder(
 
     private async Task GenerateRolesAsync()
     {
-        List<string> roles = ["SuperAdmin", "Admin", "Basic"];
-        foreach (var role in roles)
+        foreach (var role in _identitySettings.DefaultRoles)
         {
             if (await _roleManager.FindByNameAsync(role) == null)
             {
@@ -31,14 +31,12 @@ public class IdentitySeeder(
         var adminEmail = _identitySettings.DefaultAdmin.Email;
         var adminPassword = _identitySettings.DefaultAdmin.Password;
 
-        var adminRole = "SuperAdmin";
-        var basicRole = "Basic";
         if (await _userManager.FindByEmailAsync(adminEmail) == null)
         {
             var applicationUser = new ApplicationUser(
                 adminEmail,
-                "Root",
-                "SuperAdmin",
+                _identitySettings.DefaultAdmin.FirstName,
+                _identitySettings.DefaultAdmin.LastName,
                 null
                 )
             {
@@ -47,19 +45,15 @@ public class IdentitySeeder(
 
             //create user Root Super Admin
             await _userManager.CreateAsync(applicationUser, adminPassword);
-
-            //add Super Admin role to Root Super Admin
-            if (!await _userManager.IsInRoleAsync(applicationUser, adminRole))
+            foreach (var role in _identitySettings.DefaultAdmin.Roles)
             {
-                await _userManager.AddToRoleAsync(applicationUser, adminRole);
+                //add Defaulr role to the user
+                if (!await _userManager.IsInRoleAsync(applicationUser, role))
+                {
+                    await _userManager.AddToRoleAsync(applicationUser, role);
+                }
             }
-
-            //add Basic role to Root Super Admin
-            if (!await _userManager.IsInRoleAsync(applicationUser, basicRole))
-            {
-                await _userManager.AddToRoleAsync(applicationUser, basicRole);
-            }
-
+            
         }
     }
 }
