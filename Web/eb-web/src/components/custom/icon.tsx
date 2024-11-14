@@ -37,7 +37,6 @@ const Icon: React.FC<DynamicIconProps> = ({
         if (LoadedIcon) {
           setIcon(() => LoadedIcon);
         } else {
-          console.error(`Icon "${iconName}" not found in the "${set}" set`);
           setIcon(null);
         }
       } catch (error) {

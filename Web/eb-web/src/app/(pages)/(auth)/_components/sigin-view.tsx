@@ -36,15 +36,15 @@ export default function SignInViewPage() {
 
         <div>
           <Image
-            src={'/img/login_bg.jpg'}
+            src={'/img/login_bg.png'}
             alt="logo"
             layout="fill"
             objectFit="cover"
             className="w-full -z-1 -mb-40"
-            style={{
-              maskImage:
-                'linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0))',
-            }}
+            // style={{
+            //   maskImage:
+            //     'linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0))',
+            // }}
           />
         </div>
         <div className="relative z-20 mt-auto">
