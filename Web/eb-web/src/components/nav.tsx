@@ -1,6 +1,5 @@
 'use client';
 import { IconChevronDown } from '@tabler/icons-react';
-import { Button, buttonVariants } from './custom/button';
 import {
   Collapsible,
   CollapsibleContent,
@@ -26,8 +25,9 @@ import useCheckActiveNav from '@/hooks/use-check-active-nav';
 import Link from 'next/link';
 import Icon from './custom/icon';
 import { useSession } from 'next-auth/react';
-import { useContext } from 'react';
-import { ThemeContext } from './layout/theme-context';
+import { Button, buttonVariants } from './ui/button';
+import { useSelector } from 'react-redux';
+import { RootState } from '../lib/redux/store';
 
 interface NavProps extends React.HTMLAttributes<HTMLDivElement> {
   isCollapsed: boolean;
@@ -36,6 +36,7 @@ interface NavProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export default function Nav({ isCollapsed, className, closeNav }: NavProps) {
   const { data: session } = useSession();
+
   const links = session?.user.mainNavigations || [];
   const renderLink = ({ sub, ...rest }: SideLink) => {
     const key = `${rest.caption}-${rest.url}`;
@@ -90,7 +91,9 @@ function NavLink({
   subLink = false,
 }: NavLinkProps) {
   const { checkActiveNav } = useCheckActiveNav();
-  const { theme } = useContext(ThemeContext); // Get the current theme
+  const currentTheme = useSelector(
+    (state: RootState) => state.themeReducer.currentTheme
+  );
   return (
     <Link
       href={url}
@@ -110,7 +113,7 @@ function NavLink({
           iconName={icon}
           set="bi"
           size={24}
-          color={theme === 'dark' ? '#FFF' : '#000'}
+          color={currentTheme == 'dark' ? 'white' : 'black'}
         />
       </div>
       {caption}
@@ -131,11 +134,12 @@ function NavLinkDropdown({
   closeNav,
 }: NavLinkProps) {
   const { checkActiveNav } = useCheckActiveNav();
-
+  const currentTheme = useSelector(
+    (state: RootState) => state.themeReducer.currentTheme
+  );
   /* Open collapsible by default
    * if one of child element is active */
   const isChildActive = !!sub?.find((s) => checkActiveNav(s.url));
-  const { theme } = useContext(ThemeContext); // Get the current theme
 
   return (
     <Collapsible defaultOpen={isChildActive}>
@@ -150,7 +154,7 @@ function NavLinkDropdown({
             iconName={icon}
             set="bi"
             size={24}
-            color={theme === 'dark' ? '#FFF' : '#000'}
+            color={currentTheme == 'dark' ? 'white' : 'black'}
           />
         </div>
         {caption}
@@ -182,8 +186,9 @@ function NavLinkDropdown({
 
 function NavLinkIcon({ caption, icon, label, url }: NavLinkProps) {
   const { checkActiveNav } = useCheckActiveNav();
-  const { theme } = useContext(ThemeContext); // Get the current theme
-
+  const currentTheme = useSelector(
+    (state: RootState) => state.themeReducer.currentTheme
+  );
   return (
     <Tooltip delayDuration={0}>
       <TooltipTrigger asChild>
@@ -201,7 +206,7 @@ function NavLinkIcon({ caption, icon, label, url }: NavLinkProps) {
             iconName={icon}
             set="bi"
             size={24}
-            color={theme === 'dark' ? '#FFF' : '#000'}
+            color={currentTheme == 'dark' ? 'white' : 'black'}
           />
           <span className="sr-only">{caption}</span>
         </Link>
@@ -222,8 +227,9 @@ function NavLinkIconDropdown({ caption, icon, label, sub }: NavLinkProps) {
   /* Open collapsible by default
    * if one of child element is active */
   const isChildActive = !!sub?.find((s) => checkActiveNav(s.url));
-  const { theme } = useContext(ThemeContext); // Get the current theme
-
+  const currentTheme = useSelector(
+    (state: RootState) => state.themeReducer.currentTheme
+  );
   return (
     <DropdownMenu>
       <Tooltip delayDuration={0}>
@@ -238,7 +244,7 @@ function NavLinkIconDropdown({ caption, icon, label, sub }: NavLinkProps) {
                 iconName={icon}
                 set="bi"
                 size={24}
-                color={theme === 'dark' ? '#FFF' : '#000'}
+                color={currentTheme == 'dark' ? 'white' : 'black'}
               />
             </Button>
           </DropdownMenuTrigger>
@@ -269,8 +275,8 @@ function NavLinkIconDropdown({ caption, icon, label, sub }: NavLinkProps) {
                 iconName={icon}
                 set="bi"
                 size={24}
-                color={theme === 'dark' ? '#FFF' : '#000'}
-              />{' '}
+                color={currentTheme == 'dark' ? 'white' : 'black'}
+              />
               <span className="ml-2 max-w-52 text-wrap">{caption}</span>
               {label && <span className="ml-auto text-xs">{label}</span>}
             </Link>

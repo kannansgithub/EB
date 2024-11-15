@@ -1,18 +1,17 @@
-export const userService = {
-  authenticate,
+import useAxios, { useAuthAxios } from './useAxios';
+
+const UserService = {
+  Login: async ({ email, password }: { email: unknown; password: unknown }) => {
+    const { data } = await useAxios.post('/api/Account/Login', {
+      email,
+      password,
+    });
+    return data;
+  },
+  getLoginStatus: async () => {
+    const { data } = await useAuthAxios.get('/api/Account/CheckLoginStatus');
+    return data;
+  },
 };
 
-function authenticate(username: string, password: string) {
-  if (username !== 'admin' && password !== 'admin') {
-    //(1)
-    return null; //(2)
-  }
-
-  const user = {
-    id: '9001',
-    name: 'Web Admin',
-    email: 'admin@example.com',
-  }; //(3)
-
-  return user; //(4)
-}
+export { UserService };

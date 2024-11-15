@@ -7,7 +7,7 @@ import { Layout } from './layout';
 import TopNav from '../top-nav';
 import { topNavLinks } from '@/data/sidelinks';
 import { Search } from '../search';
-import { ThemeSwitcher } from '../layout/themes/theme-switch';
+import { ThemeSwitcher } from '../layout/theme-switch';
 import { UserNav } from '../user-nav';
 
 const RootContent = ({ children }: { children: React.ReactNode }) => {

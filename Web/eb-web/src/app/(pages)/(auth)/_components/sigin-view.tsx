@@ -36,11 +36,13 @@ export default function SignInViewPage() {
 
         <div>
           <Image
-            src={'/img/login_bg.png'}
+            src={'/img/login_bg.jpg'}
             alt="logo"
-            layout="fill"
-            objectFit="cover"
-            className="w-full -z-1 -mb-40"
+            height={500}
+            width={500}
+            // layout="fill"
+            // objectFit="cover"
+            // className="w-full -z-1 -mb-40"
             // style={{
             //   maskImage:
             //     'linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0))',

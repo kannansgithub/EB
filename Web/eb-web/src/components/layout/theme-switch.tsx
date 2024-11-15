@@ -11,10 +11,17 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/lib/redux/store';
+import { setCurrentTheme } from '@/lib/redux/slices/theme.slice';
 
 export function ThemeSwitcher() {
+  const dispatch = useDispatch<AppDispatch>();
   const { setTheme } = useTheme();
-
+  const handleThemeChange = (theme: string) => {
+    setTheme(theme);
+    dispatch(setCurrentTheme(theme));
+  };
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -25,17 +32,14 @@ export function ThemeSwitcher() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme('light')}>
+        <DropdownMenuItem onClick={() => handleThemeChange('light')}>
           Light
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme('dark')}>
+        <DropdownMenuItem onClick={() => handleThemeChange('dark')}>
           Dark
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme('system')}>
+        <DropdownMenuItem onClick={() => handleThemeChange('system')}>
           System
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme('blue')}>
-          Blue
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

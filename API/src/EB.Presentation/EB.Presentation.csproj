@@ -29,4 +29,8 @@
     <ProjectReference Include="..\lib\External\EB.Infrastructure\EB.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\Menus\" />
+  </ItemGroup>
+
 </Project>

@@ -13,7 +13,8 @@ import {
   useReactTable,
   Row,
 } from '@tanstack/react-table';
-import { DownloadTableExcel } from 'react-export-table-to-excel';
+import { mkConfig, generateCsv, download } from 'export-to-csv';
+
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -28,10 +29,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Button } from '../../ui/button';
+import { Button } from '@/components/ui/button';
 import { useRef, useState } from 'react';
-import { Input } from '../../ui/input';
-import { mkConfig, generateCsv, download } from 'export-to-csv';
+import { Input } from '@/components/ui/input';
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
@@ -73,6 +73,7 @@ export function DataTable<TData, TValue>({
 
   const exportExcel = (rows: Row<TData>[]) => {
     const rowData = rows.map((row) => row.original);
+    //@ts-expect-error "Type 'Row<TData>[]' is not assignable to type 'Row<TData>[]'."
     const csv = generateCsv(csvConfig)(rowData);
     download(csvConfig)(csv);
   };
@@ -85,12 +86,6 @@ export function DataTable<TData, TValue>({
         >
           Export Filtered to CSV
         </Button>
-        <Button
-          type="button"
-          onClick={() => exportExcel(table.getRowModel().rows)}
-        >
-          Export All to CSV
-        </Button>
         <Input
           placeholder="Filter emails..."
           value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
@@ -99,13 +94,6 @@ export function DataTable<TData, TValue>({
           }
           className="max-w-sm"
         />
-        <DownloadTableExcel
-          filename="Payments table"
-          sheet="payments"
-          currentTableRef={tableRef.current}
-        >
-          <button> Export excel </button>
-        </DownloadTableExcel>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">

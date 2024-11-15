@@ -8,10 +8,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '../../ui/dropdown-menu';
-import { Button } from '../../ui/button';
+} from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
 import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
-import { Checkbox } from '../../ui/checkbox';
+import { Checkbox } from '@/components/ui/checkbox';
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.

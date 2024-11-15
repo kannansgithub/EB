@@ -2,7 +2,7 @@
 import { TableCell, TableRow } from '@/components/ui/table';
 import { Gauge } from './gauge';
 
-export default function LinksVisitors({ linkId }: { linkId: string }) {
+export default function LinksVisitors() {
   const visitors = [
     {
       id: '1',
@@ -32,7 +32,11 @@ export default function LinksVisitors({ linkId }: { linkId: string }) {
               <TableCell>{visitor.name}</TableCell>
               <TableCell>{visitor.totalDuration}</TableCell>
               <TableCell>
-                <Gauge value={visitor.completionRate} />
+                <Gauge
+                  value={visitor.completionRate}
+                  size="small"
+                  showValue={false}
+                />
               </TableCell>
             </TableRow>
           ))

@@ -15,10 +15,10 @@ export default function NotFound() {
       <h2 className="font-heading my-2 text-2xl font-bold">
         Something&apos;s missing
       </h2>
-      <p>
+      <div>
         Sorry, the page you are looking for doesn&apos;t exist or has been
         moved.
-      </p>
+      </div>
       <div className="mt-8 flex justify-center gap-2">
         <Button onClick={() => router.back()} variant="default" size="lg">
           Go back

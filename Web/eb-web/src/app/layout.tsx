@@ -1,14 +1,15 @@
 import NextTopLoader from 'nextjs-toploader';
 import { ToastContainer } from 'react-toastify';
+import { Metadata } from 'next';
+
 import './globals.css';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { auth } from '@/auth';
-import Providers from '@/components/layout/providers';
 import { geistMono, geistSans } from './fonts/local';
 
 import { metadataHomePage } from '@/data/MetaDataInfo';
-import { Metadata } from 'next';
+import Providers from '@/components/providers/providers';
 
 export const metadata: Metadata = metadataHomePage;
 

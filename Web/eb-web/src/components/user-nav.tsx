@@ -1,5 +1,6 @@
+import { signOut, useSession } from 'next-auth/react';
+
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Button } from '@/components/custom/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,7 +11,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { signOut, useSession } from 'next-auth/react';
+import { Button } from '@/components/ui/button';
 export function UserNav() {
   const { data: session } = useSession();
 

@@ -1,6 +1,6 @@
 'use client';
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
-import { chartData } from '../../../../../data/sidelinks';
+import { chartData } from '@/data/sidelinks';
 
 const Overview = () => {
   return (

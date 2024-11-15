@@ -8,7 +8,7 @@ const FormSuccess = ({ message }: FormSuccessProps) => {
   return (
     <div className="bg-emerald-600/15 p-3 rounded-md flex items-center gap-x-2 text-sm font-thin text-emerald-600">
       <HiOutlineCheckCircle size={20} />
-      <p>{message}</p>
+      <div>{message}</div>
     </div>
   );
 };

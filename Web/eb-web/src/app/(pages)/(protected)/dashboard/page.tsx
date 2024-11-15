@@ -1,3 +1,4 @@
+'use client';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -7,14 +8,21 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import Overview from './components/overview';
-import RecentSales from './components/recent-sales';
+import Overview from './_components/overview';
+import RecentSales from './_components/recent-sales';
+import { UserService } from '@/services/userService';
 
 const DashboardPage = () => {
+  const handleAuthCheck = async () => {
+    const data = await UserService.getLoginStatus();
+    console.log('response: ', data);
+  };
   return (
     <>
       <div className="mb-2 flex items-center justify-between space-y-2">
         <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
+        <Button onClick={() => handleAuthCheck()}>Check login Status</Button>
+
         <div className="flex items-center space-x-2">
           <Button>New Sales</Button>
           <Button variant={'outline'}>New Purchase</Button>

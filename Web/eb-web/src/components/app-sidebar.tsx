@@ -3,9 +3,10 @@ import { IconChevronsLeft, IconMenu2, IconX } from '@tabler/icons-react';
 import { cn } from '@/lib/utils';
 // import { sidelinks } from '@/data/sidelinks';
 import { Layout } from './custom/layout';
-import { Button } from './custom/button';
 import Nav from './nav';
 import AppVersion from './app-version';
+import { Button } from './ui/button';
+import Image from 'next/image';
 
 interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
   isCollapsed: boolean;
@@ -52,45 +53,14 @@ export default function AppSidebar({
           className="z-50 flex justify-between px-4 py-3 shadow-sm md:px-4"
         >
           <div className={`flex items-center ${!isCollapsed ? 'gap-2' : ''}`}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 256 256"
-              className={`transition-all ${
-                isCollapsed ? 'h-6 w-6' : 'h-8 w-8'
-              }`}
-            >
-              <rect width="256" height="256" fill="none"></rect>
-              <line
-                x1="208"
-                y1="128"
-                x2="128"
-                y2="208"
-                fill="none"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="16"
-              ></line>
-              <line
-                x1="192"
-                y1="40"
-                x2="40"
-                y2="192"
-                fill="none"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="16"
-              ></line>
-              <span className="sr-only">Website Name</span>
-            </svg>
+            <Image src={'/img/logo.png'} alt="logo" width={30} height={30} />
             <div
               className={`flex flex-col justify-end truncate ${
                 isCollapsed ? 'invisible w-0' : 'visible w-auto'
               }`}
             >
-              <span className="font-medium">Easy Billing</span>
-              <span className="text-xs">By ATS</span>
+              <span className="font-bold text-primary">Easy Billing</span>
+              <span className="text-xs text-gray-500">By ATS</span>
             </div>
           </div>
 
@@ -132,7 +102,7 @@ export default function AppSidebar({
           />
         </Button>
         <Layout.Footer>
-          <AppVersion isCollapsed={isCollapsed} />
+          <AppVersion />
         </Layout.Footer>
       </Layout>
     </aside>

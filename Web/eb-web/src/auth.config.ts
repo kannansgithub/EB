@@ -1,26 +1,19 @@
 import CredentialProvider from 'next-auth/providers/credentials';
-//@ts-expect-error "This is a bug in the types"
 import type { NextAuthConfig } from 'next-auth';
-import axios from 'axios';
+import { UserService } from '@/services/userService';
 export default {
   providers: [
     CredentialProvider({
       name: 'Credentials',
       credentials: {
-        username: { label: 'Username', type: 'text', placeholder: 'kannan' },
+        email: { label: 'Username', type: 'text', placeholder: 'kannan' },
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
         const { email, password } = credentials;
-        const res = await axios.post(
-          `${process.env.API_ENPOINT}/api/Account/Login`,
-          {
-            email,
-            password,
-          }
-        );
-        if (res.data.code === 200) {
-          const user = res?.data?.content;
+        const res = await UserService.Login({ email, password });
+        if (res.code === 200) {
+          const user = res?.content;
           console.log('user: ', user);
           if (user) {
             return user;
@@ -37,12 +30,17 @@ export default {
     signIn: '/',
     signOut: '/',
   },
+  session: {
+    strategy: 'jwt',
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+  },
   callbacks: {
-    async jwt({ token, user }: unknown) {
+    async jwt({ token, user }) {
       return { ...token, ...user };
     },
-    async session({ session, token }: unknown) {
-      session.user = token;
+    async session({ session, token }) {
+      //@ts-expect-error "This is a bug in the types"
+      session.user = token as unknown;
       return session;
     },
   },
