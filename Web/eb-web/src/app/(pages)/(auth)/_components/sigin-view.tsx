@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/card';
 import Image from 'next/image';
 import LoginPageCarousel from '@/components/loginpage-carousel';
-
+import login_bg from '../../../../../public/assets/images/login_bg.png';
 export const metadata: Metadata = {
   title: 'Authentication',
   description: 'Authentication forms built using the components.',
@@ -31,22 +31,20 @@ export default function SignInViewPage() {
       >
         Login
       </Link>
-      <div className="relative hidden h-full flex-col lg:flex dark:border-r">
+      <div className="relative hidden h-full flex-col lg:flex dark:border-r bg-primary/15">
         <div className="absolute" />
 
         <div>
           <Image
-            src={'/img/login_bg.jpg'}
+            src={login_bg}
             alt="logo"
-            height={500}
-            width={500}
-            // layout="fill"
-            // objectFit="cover"
-            // className="w-full -z-1 -mb-40"
-            // style={{
-            //   maskImage:
-            //     'linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0))',
-            // }}
+            layout="fill"
+            objectFit="cover"
+            className="w-full -z-1 -mb-40"
+            style={{
+              maskImage:
+                'linear-gradient(to top, rgba(0,0,0,0), rgba(0,0,0,1) 500px)',
+            }}
           />
         </div>
         <div className="relative z-20 mt-auto">

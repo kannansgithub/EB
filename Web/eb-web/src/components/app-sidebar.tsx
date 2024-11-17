@@ -50,10 +50,17 @@ export default function AppSidebar({
         {/* Header */}
         <Layout.Header
           sticky
-          className="z-50 flex justify-between px-4 py-3 shadow-sm md:px-4"
+          className="z-50 flex justify-between px-4 py-3 shadow-sm md:px-4 bg-background md:shadow-none dark:bg-primary/10"
         >
           <div className={`flex items-center ${!isCollapsed ? 'gap-2' : ''}`}>
-            <Image src={'/img/logo.png'} alt="logo" width={30} height={30} />
+            <div className="bg-primary p-[2px] rounded-full">
+              <Image
+                src={'/assets/images/logo.png'}
+                alt="logo"
+                width={30}
+                height={30}
+              />
+            </div>
             <div
               className={`flex flex-col justify-end truncate ${
                 isCollapsed ? 'invisible w-0' : 'visible w-auto'
@@ -101,7 +108,7 @@ export default function AppSidebar({
             className={`h-5 w-5 ${isCollapsed ? 'rotate-180' : ''}`}
           />
         </Button>
-        <Layout.Footer>
+        <Layout.Footer className="dark:bg-primary/10">
           <AppVersion />
         </Layout.Footer>
       </Layout>

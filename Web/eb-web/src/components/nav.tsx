@@ -64,7 +64,7 @@ export default function Nav({ isCollapsed, className, closeNav }: NavProps) {
     <div
       data-collapsed={isCollapsed}
       className={cn(
-        'group border-b bg-background py-2 transition-[max-height,padding] duration-500 data-[collapsed=true]:py-2 md:border-none',
+        'group border-b bg-background dark:bg-primary/10 py-2 transition-[max-height,padding] duration-500 data-[collapsed=true]:py-2 md:border-none text-gray-500 dark:text-white',
         className
       )}
     >

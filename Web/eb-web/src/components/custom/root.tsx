@@ -23,7 +23,7 @@ const RootContent = ({ children }: { children: React.ReactNode }) => {
         } h-full`}
       >
         <Layout>
-          <Layout.Header>
+          <Layout.Header className="shadow-sm bg-primary/5">
             <TopNav links={topNavLinks} />
             <div className="ml-auto flex items-center space-x-4">
               <Search />

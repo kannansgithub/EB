@@ -1,0 +1,14 @@
+services:
+  postgres_db:
+    image: postgres:14-alpine
+    container_name: "postgres_db"
+  redis_cache:
+    image: redis:alpine
+    container_name: "redis_cache"
+
+  eb_presentation:
+    image: ${DOCKER_REGISTRY-}ebpresentation
+    build:
+      context: .
+      dockerfile: src/EB.Presentation/Dockerfile
+    container_name: "eb_webapi"
