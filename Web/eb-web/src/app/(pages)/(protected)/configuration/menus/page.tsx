@@ -1,3 +1,4 @@
+'use client';
 import {
   Card,
   CardContent,
@@ -6,13 +7,15 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { SaveIcon, CircleXIcon } from 'lucide-react';
+import AddButton from '@/components/custom/add-button';
+import CancelButton from '@/components/custom/cancel-button';
+import SaveButton from '@/components/custom/save-button';
+import toasterMessage from '@/lib/tost-alert';
 
 const MenuPage = () => {
   return (
     <>
-      <Card className="p-0 m-0">
+      <Card className="p-0 m-0 border-none bg-background shadow-none">
         <CardHeader>
           <div className="flex justify-between items-center">
             <div>
@@ -20,17 +23,15 @@ const MenuPage = () => {
               <CardDescription>Card Description</CardDescription>
             </div>
             <div className="flex gap-3">
-              <Button
-                variant={'outline'}
-                className="text-primary bg-primary/10 hover:text-primary hover:font-medium"
-              >
-                <SaveIcon />
-                Save
-              </Button>
-              <Button variant={'outline'}>
-                <CircleXIcon />
-                Cancel
-              </Button>
+              <AddButton
+                onClick={() => toasterMessage.info('Clicked Add button')}
+              />
+              <SaveButton
+                onClick={() => toasterMessage.success('Clicked Save button')}
+              />
+              <CancelButton
+                onClick={() => toasterMessage.error('Clicked Cancel button')}
+              />
             </div>
           </div>
         </CardHeader>

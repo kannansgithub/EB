@@ -31,7 +31,7 @@ const RootContent = ({ children }: { children: React.ReactNode }) => {
               <UserNav />
             </div>
           </Layout.Header>
-          <Layout.Body>{children}</Layout.Body>
+          <Layout.Body className="p-0">{children}</Layout.Body>
         </Layout>
       </main>
     </div>
